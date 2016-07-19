@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Npuzzle.hpp                                        :+:      :+:    :+:   */
+/*   PuzzleState.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleung-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/19 12:09:30 by aleung-c          #+#    #+#             */
-/*   Updated: 2016/07/19 12:09:34 by aleung-c         ###   ########.fr       */
+/*   Created: 2016/07/19 17:32:32 by aleung-c          #+#    #+#             */
+/*   Updated: 2016/07/19 17:32:35 by aleung-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NPUZZLE_HPP
-# define NPUZZLE_HPP
+#include "Npuzzle.hpp"
 
-// General includes
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <iostream>
-# include <sstream>
-# include <fcntl.h>
-# include <list>
-# include <vector>
-# include <string>
+/*
+**	Represent ONE state of the taquin board.
+*/
+class PuzzleState
+{
+	public:
+		int									PuzzleSize;
+		std::vector< std::vector <int> >	Values;
 
-class PuzzleState;
-class InitPuzzle;
+		PuzzleState();
+		~PuzzleState();
 
-
-#include "InitPuzzle.hpp"
-#include "PuzzleState.hpp"
-
-#endif
+		void PrintPuzzleState();
+		void MakeDefault();
+};

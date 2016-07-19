@@ -14,8 +14,24 @@
 
 int		main(int argc, char **argv)
 {
-	if (argc && argv[0])
+	PuzzleState FirstState;
+
+	if (InitPuzzle::CheckArgs(argc, argv) == 0)
 	{
+		// ------ Setting program base;
 		std::cout << "Npuzzle Start !\n";
+		//FirstState = InitPuzzle::CreatePuzzle(argc, argv);
+
+		FirstState.MakeDefault();
+		FirstState.PrintPuzzleState();
+
+		// ------ Starting PuzzleResolution;
+		// ...
+		
 	}
+	else
+	{
+		std::cout << "Usage: " << argv[0] << " [puzzle.txt]\n";
+	}
+	return (0);
 }

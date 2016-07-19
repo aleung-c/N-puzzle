@@ -13,13 +13,12 @@
 #include "Npuzzle.hpp"
 
 /*
-**	Initialize puzzle : open file or generate random board.
+**	Initialize puzzle : open file or generate random board
+**	from exec arguments. Static methods
 */
-
 class InitPuzzle
 {
 	public:
-		InitPuzzle();
-		~InitPuzzle();
-
+		static int				CheckArgs(int argc, char **argv);
+		static PuzzleState		CreatePuzzle(int argc, char **argv);
 };
