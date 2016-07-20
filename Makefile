@@ -13,8 +13,10 @@
 NAME = Npuzzle
 
 SRC = ./src/Main.cpp \
+./src/Heuristic.cpp \
 ./src/InitPuzzle.cpp \
-./src/PuzzleState.cpp
+./src/PuzzleState.cpp \
+
 
 OBJ = $(SRC:.cpp=.o)
 

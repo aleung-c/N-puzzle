@@ -24,9 +24,9 @@
 # include <vector>
 # include <string>
 
+class		Heuristic;
 class		PuzzleState;
 class		InitPuzzle;
-
 
 #include "PuzzleState.hpp"
 
@@ -43,7 +43,8 @@ typedef struct 					s_NpuzzleData
 	std::vector<PuzzleState>	OpenedList;
 	std::vector<PuzzleState>	ClosedList;
 }								t_NpuzzleData;
-
+#include "Heuristic.hpp"
 #include "InitPuzzle.hpp"
+
 
 #endif

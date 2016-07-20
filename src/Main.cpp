@@ -20,7 +20,7 @@ int		main(int argc, char **argv)
 	{
 		// ------ Setting program base;
 		std::cout << "Npuzzle Start !\n";
-		//NpuzzleGlobal.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv);
+		// NpuzzleGlobal.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv);
 
 		Npuzzle.FirstState.MakeDefault();
 		Npuzzle.FirstState.PrintPuzzleState();
@@ -33,5 +33,11 @@ int		main(int argc, char **argv)
 	{
 		std::cout << "Usage: " << argv[0] << " [puzzle.txt]\n";
 	}
+
+	/***** ZONE RADIOACTIVE *****/
+
+	std::vector <std::vector <int> > Values;
+	// printf("%d\n", Heuristic::CasesWronglyPlaced(Values)); 
+	/***** FIN DE LA ZONE RADIOACTIVE *****/
 	return (0);
 }
