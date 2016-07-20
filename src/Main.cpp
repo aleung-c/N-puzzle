@@ -14,16 +14,16 @@
 
 int		main(int argc, char **argv)
 {
-	PuzzleState FirstState;
+	t_NpuzzleData		Npuzzle;
 
-	if (InitPuzzle::CheckArgs(argc, argv) == 0)
+	if (InitPuzzle::CheckArgs(&Npuzzle, argc, argv) == 0)
 	{
 		// ------ Setting program base;
 		std::cout << "Npuzzle Start !\n";
-		//FirstState = InitPuzzle::CreatePuzzle(argc, argv);
+		//NpuzzleGlobal.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv);
 
-		FirstState.MakeDefault();
-		FirstState.PrintPuzzleState();
+		Npuzzle.FirstState.MakeDefault();
+		Npuzzle.FirstState.PrintPuzzleState();
 
 		// ------ Starting PuzzleResolution;
 		// ...

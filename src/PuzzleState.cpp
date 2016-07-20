@@ -12,7 +12,7 @@
 
 #include "../includes/Npuzzle.hpp"
 
-PuzzleState::PuzzleState()
+PuzzleState::PuzzleState() : ParentState(NULL)
 {
 
 }

@@ -14,11 +14,11 @@
 
 /*
 **	Initialize puzzle : open file or generate random board
-**	from exec arguments. Static methods
+**	from exec arguments. Static methods.
 */
 class InitPuzzle
 {
 	public:
-		static int				CheckArgs(int argc, char **argv);
-		static PuzzleState		CreatePuzzle(int argc, char **argv);
+		static int				CheckArgs(t_NpuzzleData *Npuzzle, int argc, char **argv);
+		static PuzzleState		CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **argv);
 };

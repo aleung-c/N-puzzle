@@ -12,8 +12,10 @@
 
 #include "../includes/Npuzzle.hpp"
 
-int				InitPuzzle::CheckArgs(int argc, char **argv)
+int				InitPuzzle::CheckArgs(t_NpuzzleData *Npuzzle, int argc, char **argv)
 {
+	if (Npuzzle)
+	{}
 	if (argc > 2 || (argc == 2 && !argv[1][0]))
 	{
 		return (-1);
@@ -21,8 +23,10 @@ int				InitPuzzle::CheckArgs(int argc, char **argv)
 	return (0);
 }
 
-PuzzleState		InitPuzzle::CreatePuzzle(int argc, char **argv)
+PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **argv)
 {
+	if (Npuzzle)
+	{}
 	if (argc != 0 && argv[0])
 	{
 		std::cout << "start CreatePuzzle\n";

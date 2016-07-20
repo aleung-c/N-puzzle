@@ -20,10 +20,11 @@ class PuzzleState
 	public:
 		int									PuzzleSize;
 		std::vector< std::vector <int> >	Values;
+		PuzzleState 						*ParentState;
 
-		PuzzleState();
-		~PuzzleState();
+							PuzzleState();
+							~PuzzleState();
 
-		void PrintPuzzleState();
-		void MakeDefault();
+		void				PrintPuzzleState();
+		void				MakeDefault();
 };

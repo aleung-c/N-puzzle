@@ -24,11 +24,26 @@
 # include <vector>
 # include <string>
 
-class PuzzleState;
-class InitPuzzle;
+class		PuzzleState;
+class		InitPuzzle;
 
+
+#include "PuzzleState.hpp"
+
+/*
+**	Main structure containing puzzle datas.
+*/
+typedef struct 					s_NpuzzleData
+{
+	int PuzzleSize;
+
+	PuzzleState					FirstState;
+	PuzzleState					TargetState;
+
+	std::vector<PuzzleState>	OpenedList;
+	std::vector<PuzzleState>	ClosedList;
+}								t_NpuzzleData;
 
 #include "InitPuzzle.hpp"
-#include "PuzzleState.hpp"
 
 #endif
