@@ -27,4 +27,5 @@ class PuzzleState
 
 		void				PrintPuzzleState();
 		void				MakeDefault();
+		void				TargetState();
 };

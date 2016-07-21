@@ -16,6 +16,7 @@ SRC = ./src/Main.cpp \
 ./src/Heuristic.cpp \
 ./src/InitPuzzle.cpp \
 ./src/PuzzleState.cpp \
+./src/Point.cpp \
 
 
 OBJ = $(SRC:.cpp=.o)

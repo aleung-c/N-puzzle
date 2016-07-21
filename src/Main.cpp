@@ -12,10 +12,12 @@
 
 #include "../includes/Npuzzle.hpp"
 
+
+extern  t_NpuzzleData		Npuzzle;
+
+
 int		main(int argc, char **argv)
 {
-	t_NpuzzleData		Npuzzle;
-
 	if (InitPuzzle::CheckArgs(&Npuzzle, argc, argv) == 0)
 	{
 		// ------ Setting program base;
@@ -23,6 +25,7 @@ int		main(int argc, char **argv)
 		// NpuzzleGlobal.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv);
 
 		Npuzzle.FirstState.MakeDefault();
+		Npuzzle.TargetState.TargetState();
 		Npuzzle.FirstState.PrintPuzzleState();
 
 		// ------ Starting PuzzleResolution;
@@ -35,9 +38,9 @@ int		main(int argc, char **argv)
 	}
 
 	/***** ZONE RADIOACTIVE *****/
-
-	std::vector <std::vector <int> > Values;
-	printf("%d\n", Heuristic::CasesWronglyPlaced(Values)); 
+	printf("%d\n", Heuristic::CasesTrulyPlaced(Npuzzle.FirstState.Values)); 
+	printf("%d\n", Heuristic::CasesWronglyPlaced(Npuzzle.FirstState.Values));
+	printf("%d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));
 	/***** FIN DE LA ZONE RADIOACTIVE *****/
 	return (0);
 }

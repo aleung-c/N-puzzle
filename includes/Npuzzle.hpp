@@ -27,8 +27,11 @@
 class		Heuristic;
 class		PuzzleState;
 class		InitPuzzle;
+class 		Point;
 
 #include "PuzzleState.hpp"
+
+
 
 /*
 **	Main structure containing puzzle datas.
@@ -43,8 +46,10 @@ typedef struct 					s_NpuzzleData
 	std::vector<PuzzleState>	OpenedList;
 	std::vector<PuzzleState>	ClosedList;
 }								t_NpuzzleData;
+
 #include "Heuristic.hpp"
 #include "InitPuzzle.hpp"
+#include "Point.hpp"
 
 
 #endif

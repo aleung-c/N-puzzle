@@ -7,7 +7,11 @@
 class Heuristic
 {
 	public:
-		static int				Manhattan(int x1, int y1, int x2, int y2);
+		static int				Manhattan(std::vector< std::vector <int> > Values);
 		static int 				CasesWronglyPlaced(std::vector< std::vector <int> > Values);
 		static int 				CasesTrulyPlaced(std::vector< std::vector <int> > Values);
+
+	private: 
+		static	int				DistanceManhattan(Point *Source, Point *Target);
+		static  Point			*GetCoordFromValue(int Value);
 };
