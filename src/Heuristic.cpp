@@ -6,7 +6,7 @@ int				Heuristic::Manhattan(int x1, int y1, int x2, int y2)
 	return (std::abs(x2 - x1) + std::abs(y2 - y1));
 }
 
-int 			CasesWronglyPlaced(std::vector< std::vector <int> > Values)
+int 			Heuristic::CasesWronglyPlaced(std::vector< std::vector <int> > Values)
 {
 	int nbWrong = 0;
 	int i = 0;
@@ -25,7 +25,7 @@ int 			CasesWronglyPlaced(std::vector< std::vector <int> > Values)
     return (nbWrong);
 }
 
-int 				CasesTrulyPlaced(std::vector< std::vector <int> > Values)
+int 				Heuristic::CasesTrulyPlaced(std::vector< std::vector <int> > Values)
 {
 	int nbTrue = 0;
 	int i = 0;

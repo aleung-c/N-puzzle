@@ -37,7 +37,7 @@ int		main(int argc, char **argv)
 	/***** ZONE RADIOACTIVE *****/
 
 	std::vector <std::vector <int> > Values;
-	// printf("%d\n", Heuristic::CasesWronglyPlaced(Values)); 
+	printf("%d\n", Heuristic::CasesWronglyPlaced(Values)); 
 	/***** FIN DE LA ZONE RADIOACTIVE *****/
 	return (0);
 }
