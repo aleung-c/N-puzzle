@@ -2,7 +2,7 @@
 #include "../includes/Npuzzle.hpp"
 
 t_NpuzzleData		Npuzzle;
-
+/***********************************Public Method***********************************/
 int				Heuristic::Manhattan(std::vector< std::vector <int> > Values)
 {
 	int Distance = 0;
@@ -54,7 +54,9 @@ int 				Heuristic::CasesTrulyPlaced(std::vector< std::vector <int> > Values)
     }
     return (nbTrue);
 }
+/***********************************End Of Public Method***********************************/
 
+/***********************************Private Method*****************************************/
 int					Heuristic::DistanceManhattan(Point *Source, Point *Target)
 {
 	 return (std::abs(Target->getX() - Source->getX()) + std::abs(Target->getY() - Source->getY()));
@@ -76,4 +78,5 @@ Point				*Heuristic::GetCoordFromValue(int Value)
     }
     return (new Point(0,0));
 }
+/************************************End of Private Method***********************************/
 
