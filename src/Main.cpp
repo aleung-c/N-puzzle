@@ -22,11 +22,15 @@ int		main(int argc, char **argv)
 	{
 		// ------ Setting program base;
 		std::cout << "Npuzzle Start !\n";
-		// NpuzzleGlobal.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv);
+		
+		Npuzzle.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv); // now working basically.
 
-		Npuzzle.FirstState.MakeDefault();
-		Npuzzle.TargetState.TargetState();
+		std::cout << "Puzzle first state parsed: \n";
 		Npuzzle.FirstState.PrintPuzzleState();
+
+		std::cout << "Puzzle Target state created: \n";
+		Npuzzle.TargetState.TargetState(Npuzzle.PuzzleSize); // modified.
+		Npuzzle.TargetState.PrintPuzzleState();
 
 		// ------ Starting PuzzleResolution;
 		// ...

@@ -28,7 +28,7 @@ void PuzzleState::MakeDefault()
 	int x = 0;
 	int val = 0;
 
-	this->PuzzleSize = 4;
+	this->PuzzleSize = 3;
 	while (y < this->PuzzleSize)
 	{
 		std::vector<int> tmp;
@@ -45,13 +45,13 @@ void PuzzleState::MakeDefault()
 }
 
 
-void PuzzleState::TargetState()
+void PuzzleState::TargetState(int puzzleSize)
 {
 	int y = 0;
 	int x = 0;
 	int val = 1;
 
-	this->PuzzleSize = 4;
+	this->PuzzleSize = puzzleSize;
 	while (y < this->PuzzleSize)
 	{
 		std::vector<int> tmp;

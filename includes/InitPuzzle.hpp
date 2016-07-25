@@ -21,4 +21,5 @@ class InitPuzzle
 	public:
 		static int				CheckArgs(t_NpuzzleData *Npuzzle, int argc, char **argv);
 		static PuzzleState		CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **argv);
+		static int				GetPuzzleSizeFromStr(std::string line);
 };

@@ -18,11 +18,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <iostream>
+# include <fstream>
 # include <sstream>
 # include <fcntl.h>
 # include <list>
 # include <vector>
 # include <string>
+# include <regex>
 
 class		Heuristic;
 class		PuzzleState;

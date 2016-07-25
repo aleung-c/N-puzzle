@@ -27,5 +27,5 @@ class PuzzleState
 
 		void				PrintPuzzleState();
 		void				MakeDefault();
-		void				TargetState();
+		void				TargetState(int puzzleSize);
 };
