@@ -25,11 +25,13 @@
 # include <vector>
 # include <string>
 # include <regex>
+#include <random>
 
 class		Heuristic;
 class		PuzzleState;
 class		InitPuzzle;
-class 		Point;
+class		Point;
+class		Resolver;
 
 #include "PuzzleState.hpp"
 
@@ -52,6 +54,7 @@ typedef struct 					s_NpuzzleData
 #include "Heuristic.hpp"
 #include "InitPuzzle.hpp"
 #include "Point.hpp"
+#include "Resolver.hpp"
 
 
 #endif

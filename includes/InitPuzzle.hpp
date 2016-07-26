@@ -20,6 +20,10 @@ class InitPuzzle
 {
 	public:
 		static int				CheckArgs(t_NpuzzleData *Npuzzle, int argc, char **argv);
+		
 		static PuzzleState		CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **argv);
-		static int				GetPuzzleSizeFromStr(std::string line);
+		static PuzzleState		FillPuzzleWithFile(std::ifstream &fs, t_NpuzzleData *Npuzzle);
+		static PuzzleState		GenerateRandomizedPuzzle(int puzzleSize);
+
+		static void				PrintUsage(std::string arg);
 };

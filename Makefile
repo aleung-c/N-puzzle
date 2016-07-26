@@ -17,7 +17,7 @@ SRC = ./src/Main.cpp \
 ./src/InitPuzzle.cpp \
 ./src/PuzzleState.cpp \
 ./src/Point.cpp \
-
+./src/Resolver.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

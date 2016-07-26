@@ -25,7 +25,7 @@ int		main(int argc, char **argv)
 		
 		Npuzzle.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv); // now working basically.
 
-		std::cout << "Puzzle first state parsed: \n";
+		std::cout << "Puzzle First state created: \n";
 		Npuzzle.FirstState.PrintPuzzleState();
 
 		std::cout << "Puzzle Target state created: \n";
@@ -38,7 +38,7 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
-		std::cout << "Usage: " << argv[0] << " [puzzle.txt]\n";
+		InitPuzzle::PrintUsage(argv[0]);
 	}
 
 	/***** ZONE RADIOACTIVE *****/
