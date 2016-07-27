@@ -28,8 +28,4 @@ class Resolver
 	
 		std::vector<PuzzleState>		ExpandState(PuzzleState State);
 
-		// Operations on PuzzleState
-		int								GetStateValue(PuzzleState *State, Point coord);
-		void							ChangeStateValue(PuzzleState *State, Point coord, int newVal);
-
 };
