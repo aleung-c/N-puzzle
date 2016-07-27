@@ -57,8 +57,9 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 		&& argv[2] && std::regex_match (argv[2], std::regex("^(\\d+)$")))
 	{
 		// only -g and a number. generate puzzle from size given in arg.
-		//std::cout << "-g and a number, randomize from given size\n";
-		ReturnedFirstState = GenerateRandomizedPuzzle(std::strtol(argv[2], NULL, 10));
+		Npuzzle->PuzzleSize = std::atoi(argv[2]);
+		ReturnedFirstState = GenerateRandomizedPuzzle(std::atoi(argv[2]));
+		
 	}
 	else
 	{
@@ -146,7 +147,7 @@ PuzzleState		InitPuzzle::GenerateRandomizedPuzzle(int puzzleSize)
 	int						random_y;
 	int						tmp;
 
-	ReturnedState.TargetState(puzzleSize); // put the state in finished state before randomizing it;
+	PStools::MakeTarget(ReturnedState, puzzleSize); // put the state in finished state before randomizing it;
 	std::mt19937 rng(rd()); // random-number engine used (Mersenne-Twister in this case)
 	std::uniform_int_distribution<int> uni(0, puzzleSize - 1); // guaranteed unbiased
 	while (y < puzzleSize)
@@ -166,7 +167,6 @@ PuzzleState		InitPuzzle::GenerateRandomizedPuzzle(int puzzleSize)
 		y++;
 		x = 0;
 	}
-
 	return (ReturnedState);
 }
 

@@ -17,11 +17,12 @@ SRC = ./src/Main.cpp \
 ./src/InitPuzzle.cpp \
 ./src/PuzzleState.cpp \
 ./src/Point.cpp \
-./src/Resolver.cpp
+./src/Resolver.cpp \
+./src/PStools.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CC = clang++ -Wall -Werror -Wextra
+CC = clang++ -g -Wall -Werror -Wextra
 
 all: $(NAME)
 

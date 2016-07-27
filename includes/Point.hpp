@@ -6,10 +6,18 @@
 class Point
 {
 	public:
-				Point(int x, int y);
-			int getX();
-			int getY();
+					Point();
+					Point(int x, int y);
+			Point	&operator=(const Point &other);
+
+			int		getX();
+			int		getY();
+
+			void	setX(int x);
+			void	setY(int y);
+			void	setCoord(int x, int y);
+
 	private:
-			int _x;
-			int _y;
+			int		_x;
+			int		_y;
 };

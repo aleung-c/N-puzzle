@@ -18,7 +18,18 @@
 class Resolver
 {
 	public:
-		Resolver();
-		~Resolver();
+										Resolver();
+										Resolver(t_NpuzzleData *nPuzzle);
+										~Resolver();
+
+		t_NpuzzleData					*CurNpuzzle;
+
+		void							Start();
 	
+		std::vector<PuzzleState>		ExpandState(PuzzleState State);
+
+		// Operations on PuzzleState
+		int								GetStateValue(PuzzleState *State, Point coord);
+		void							ChangeStateValue(PuzzleState *State, Point coord, int newVal);
+
 };

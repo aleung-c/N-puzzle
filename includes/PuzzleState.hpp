@@ -19,13 +19,23 @@ class PuzzleState
 {
 	public:
 		int									PuzzleSize;
+		
+		// Main values of the state with indexed positions;
 		std::vector< std::vector <int> >	Values;
+
+		// Values of the state as string for quick comparison;
+		std::string							ValuesString;
+		
+		// Precedent node in the A* implementation;
 		PuzzleState 						*ParentState;
+
+		// cost set by selected Heuristic;
+		int									Cost;
 
 							PuzzleState();
 							~PuzzleState();
 
-		void				PrintPuzzleState();
-		void				MakeDefault();
-		void				TargetState(int puzzleSize);
+		// Allow State duplication;
+		PuzzleState			&operator=(const PuzzleState& other);	
+
 };

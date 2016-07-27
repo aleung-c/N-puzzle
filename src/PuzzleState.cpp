@@ -12,78 +12,24 @@
 
 #include "../includes/Npuzzle.hpp"
 
-PuzzleState::PuzzleState() : ParentState(NULL)
+		PuzzleState::PuzzleState() : ParentState(NULL)
 {
 
 }
 
-PuzzleState::~PuzzleState()
+		PuzzleState::~PuzzleState()
 {
 
 }
 
-void PuzzleState::MakeDefault()
+PuzzleState			&PuzzleState::operator=(const PuzzleState& other)
 {
-	int y = 0;
-	int x = 0;
-	int val = 0;
-
-	this->PuzzleSize = 3;
-	while (y < this->PuzzleSize)
-	{
-		std::vector<int> tmp;
-		while (x < this->PuzzleSize)
-		{
-			tmp.push_back(val);
-			x++;
-			val++;
-		}
-		this->Values.push_back(tmp);
-		y++;
-		x = 0;
-	}
+	PuzzleSize = other.PuzzleSize;
+	Values = other.Values;
+	ValuesString = other.ValuesString;
+	ParentState = NULL;
+	Cost = other.Cost;
+	return (*this);
 }
 
 
-void PuzzleState::TargetState(int puzzleSize)
-{
-	int y = 0;
-	int x = 0;
-	int val = 1;
-
-	this->PuzzleSize = puzzleSize;
-	while (y < this->PuzzleSize)
-	{
-		std::vector<int> tmp;
-		while (x < this->PuzzleSize)
-		{
-			if (val == (this->PuzzleSize * this->PuzzleSize))
-				val = 0;
-			tmp.push_back(val);
-			x++;
-			val++;
-		}
-		this->Values.push_back(tmp);
-		y++;
-		x = 0;
-	}
-}
-
-void PuzzleState::PrintPuzzleState()
-{
-	int y = 0;
-	int x = 0;
-
-	while (y < PuzzleSize)
-	{
-		while (x < PuzzleSize)
-		{
-			std::cout << Values[y][x] << " ";
-			x++;
-		}
-		std::cout << "\n";
-		y++;
-		x = 0;
-	}
-	std::cout << "\n";
-}

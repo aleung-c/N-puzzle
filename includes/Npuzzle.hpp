@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <cstdlib>
 # include <iostream>
 # include <fstream>
 # include <sstream>
@@ -25,24 +26,27 @@
 # include <vector>
 # include <string>
 # include <regex>
-#include <random>
+# include <random>
 
 class		Heuristic;
 class		PuzzleState;
 class		InitPuzzle;
 class		Point;
 class		Resolver;
+class		PStools;
 
 #include "PuzzleState.hpp"
-
-
 
 /*
 **	Main structure containing puzzle datas.
 */
 typedef struct 					s_NpuzzleData
 {
-	int PuzzleSize;
+	int							PuzzleSize;
+	int							SelectedHeuristicNb;
+
+	// Pointer to selected heuristic fonction;
+	int							(*CurHeuristic)(std::vector< std::vector <int> > Values);
 
 	PuzzleState					FirstState;
 	PuzzleState					TargetState;
@@ -55,6 +59,7 @@ typedef struct 					s_NpuzzleData
 #include "InitPuzzle.hpp"
 #include "Point.hpp"
 #include "Resolver.hpp"
+#include "PStools.hpp"
 
 
 #endif
