@@ -45,15 +45,16 @@ void						Resolver::AStarTurn(PuzzleState &State)
 
 	// Expand state;
 	State.Cost = CurNpuzzle->CurHeuristic(CurNpuzzle->FirstState.Values);
-	std::cout << "State Cost : " << CurNpuzzle->FirstState.Cost << "\n";
-	expandedStates = ExpandState(CurNpuzzle->FirstState);
+	std::cout << "State Cost : " << State.Cost << "\n";
+	expandedStates = ExpandState(State);
 
 	// Debug printing for state expansion.
+	/*
 	for (int i = 0; i < (int)expandedStates.size(); i++)
 	{
 		std::cout << KGRN "new state created\n" KRESET;
 		PStools::PrintPuzzleState(expandedStates[i]);
-		/*if (!std::strcmp(CurNpuzzle->TargetState.ValuesString, expandedStates[i].ValuesString))
+		if (std::strcmp(CurNpuzzle->TargetState.ValuesString.c_str(), expandedStates[i].ValuesString.c_str()) != 0)
 		{
 			AStarTurn(expandedStates[i]);
 		}
@@ -62,9 +63,9 @@ void						Resolver::AStarTurn(PuzzleState &State)
 
 			std::cout << "End found" << std::endl;
 			exit (0);
-		}*/
+		}
 	}
-
+	*/
 
 	
 

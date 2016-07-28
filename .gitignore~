@@ -20,7 +20,6 @@
 *.lib
 
 # Executables
-Npuzzle
 *.exe
 *.out
 *.app
