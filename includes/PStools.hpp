@@ -19,6 +19,7 @@ class PStools
 {
 	public:
 		static int			GetStateValue(PuzzleState &State, Point coord);
+		static int			GetStateValueFromStr(PuzzleState &State, Point coord);
 		static void			ChangeStateValue(PuzzleState &State, Point coord,
 												int newVal);
 		static void			PrintPuzzleState(PuzzleState &State);

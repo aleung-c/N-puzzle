@@ -30,6 +30,7 @@ int		main(int argc, char **argv)
 
 		std::cout << "First state:" << std::endl;
 		PStools::PrintPuzzleState(Npuzzle.FirstState);
+		PStools::PrintValuesString(Npuzzle.FirstState);
 
 		std::cout << "Target state:" << std::endl;
 		// Npuzzle.TargetState.TargetState(Npuzzle.PuzzleSize); // modified.
