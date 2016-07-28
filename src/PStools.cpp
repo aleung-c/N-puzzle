@@ -12,9 +12,13 @@
 
 #include "../includes/Npuzzle.hpp"
 
+/*
+**	Give value at position in the PuzzleState.
+*/
 int			PStools::GetStateValue(PuzzleState &State, Point coord)
 {
-	std::vector< std::vector<int> >::iterator	row;
+	// Iterating version
+	/*std::vector< std::vector<int> >::iterator	row;
 	std::vector<int>::iterator					col;
 	int											y = 0;
 	int											x = 0;
@@ -30,11 +34,19 @@ int			PStools::GetStateValue(PuzzleState &State, Point coord)
 		}
 		x = 0;
 	}
-	return (-1); // not found, error;
+	return (-1); // not found, error;*/
+
+	// Direct access unprotected version
+	return ((State.Values[coord.getY()])[coord.getX()]);
 }
 
+/*
+**	Change value at position in the PuzzleState.
+*/
 void		PStools::ChangeStateValue(PuzzleState &State, Point coord, int newVal)
 {
+	// Iterating version
+	/*
 	std::vector< std::vector<int> >::iterator	row;
 	std::vector<int>::iterator					col;
 	int											y = 0;
@@ -51,7 +63,10 @@ void		PStools::ChangeStateValue(PuzzleState &State, Point coord, int newVal)
 			}
 		}
 		x = 0;
-	}
+	}*/
+
+	// Direct access unprotected version
+	(State.Values[coord.getY()])[coord.getX()] = newVal;
 }
 
 void		PStools::MakeDefault(PuzzleState &State)
@@ -74,6 +89,18 @@ void		PStools::MakeDefault(PuzzleState &State)
 		y++;
 		x = 0;
 	}
+}
+
+/*
+**	Swap positions of values of Pos1 and Pos2 
+*/
+void PStools::SwapPuzzleValues(PuzzleState &State, Point Pos1, Point Pos2)
+{
+	int tmp;
+
+	tmp = (State.Values[Pos1.getY()])[Pos1.getX()];
+	(State.Values[Pos1.getY()])[Pos1.getX()] = (State.Values[Pos2.getY()])[Pos2.getX()];
+	(State.Values[Pos2.getY()])[Pos2.getX()] = tmp;
 }
 
 
