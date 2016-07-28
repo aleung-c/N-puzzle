@@ -55,9 +55,5 @@ int		main(int argc, char **argv)
 	printf("MAN: %d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));
 	printf("MANI: %d\n", Heuristic::ManhattanImproved(Npuzzle.FirstState.Values));
 	/***** FIN DE LA ZONE RADIOACTIVE *****/
-	PStools::MakeTargetP(Npuzzle.TargetState, Npuzzle.FirstState.PuzzleSize);
-	PStools::PrintPuzzleState(Npuzzle.TargetState);
-
-
 	return (0);
 }
