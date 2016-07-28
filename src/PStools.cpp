@@ -180,3 +180,36 @@ bool  		PStools::IsTruePosition(PuzzleState State, int number, Point coord)
 		return (true);
 	return (false);
 }
+
+void 		PStools::MakeTargetP(PuzzleState  &State, int PuzzleSize)
+{
+	int x = 0;
+	int y = 0;
+	int val = 1;
+
+	while (x < PuzzleSize)
+	{
+		State.Values[y][x] = val;
+		x++;
+		val++;
+	}
+	y = 1;
+	x--;
+	// PuzzleSize--;
+	while (y < PuzzleSize)
+	{
+		printf("%d x: %d y: %d\n", val, x, y);
+		State.Values[y][x] = val;
+		y++;
+		val++;
+	}
+
+	while (x >= 0)
+	{
+		
+	}
+}
+
+
+
+
