@@ -20,39 +20,41 @@ int				Heuristic::Manhattan(std::vector< std::vector <int> > Values)
 int 			Heuristic::CasesWronglyPlaced(std::vector< std::vector <int> > Values)
 {
 	int nbWrong = 0;
-	int i = 1;
+    int y = 0;
+    int x = 0;
 	std::vector< std::vector<int> >::iterator row;
 	std::vector<int>::iterator col;
 
-	for (row = Values.begin(); row != Values.end(); row++) 
+	for (row = Values.begin(); row != Values.end(); row++, y++) 
 	{
-    	for (col = row->begin(); col != row->end(); col++) 
+    	for (col = row->begin(); col != row->end(); col++, x++) 
     	{
-        	if (!(i == *col || (i == (int)(Values.size() * Values.size()) && *col == 0)))
+        	if (*col != Npuzzle.TargetState.Values[y][x])
         		nbWrong++;	
-        	i++;
         }
+        x = 0;
     }
     return (nbWrong);
 }
 
 int 				Heuristic::CasesTrulyPlaced(std::vector< std::vector <int> > Values)
 {
-	int nbTrue = 0;
-	int i = 1;
-	std::vector< std::vector<int> >::iterator row;
-	std::vector<int>::iterator col;
+	int nbWrong = 0;
+    int y = 0;
+    int x = 0;
+    std::vector< std::vector<int> >::iterator row;
+    std::vector<int>::iterator col;
 
-	for (row = Values.begin(); row != Values.end(); row++) 
-	{
-    	for (col = row->begin(); col != row->end(); col++) 
-    	{
-        	if ((i == *col || (i == (int)(Values.size() * Values.size()) && *col == 0)))
-        		nbTrue++;
-        	i++;
+    for (row = Values.begin(); row != Values.end(); row++, y++) 
+    {
+        for (col = row->begin(); col != row->end(); col++, x++) 
+        {
+            if (*col == Npuzzle.TargetState.Values[y][x])
+                nbWrong++;  
         }
+        x = 0;
     }
-    return (nbTrue);
+    return (nbWrong);
 }
 
 int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Values)
@@ -71,7 +73,8 @@ int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Va
         {
              if ((Tab[y][x] = Heuristic::DistanceManhattan(new Point(col - row->begin(), row - Values.begin()), Heuristic::GetCoordFromValue(*col))) == 1)
              {
-                if ((x - 1 >= 0 && Tab[y][x - 1] == 1) || (y - 1 >= 0 && Tab[y - 1][x] == 1))// ajouter une methode qui cheque la vrai position
+                if ((x - 1 >= 0 && Tab[y][x - 1] == 1 && PStools::IsTruePosition(Npuzzle.TargetState, *col, Point(x - 1, y))) 
+                    || (y - 1 >= 0 && Tab[y - 1][x] == 1 && PStools::IsTruePosition(Npuzzle.TargetState, *col, Point(x, y - 1))))
                 {
                     printf("x: %d y: %d\n", x, y);
                     Distance += 2;

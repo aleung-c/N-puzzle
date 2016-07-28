@@ -173,3 +173,10 @@ void	PStools::PrintValuesString(PuzzleState &State)
 {
 	std::cout << State.ValuesString << "\n";
 }
+
+bool  		PStools::IsTruePosition(PuzzleState State, int number, Point coord)
+{
+	if (State.Values[coord.getY()][coord.getX()] == number)
+		return (true);
+	return (false);
+}

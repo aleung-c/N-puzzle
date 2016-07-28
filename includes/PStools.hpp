@@ -34,6 +34,8 @@ class PStools
 		// Debug / printing
 		static void			PrintValuesString(PuzzleState &State);
 		static void			PrintPuzzleState(PuzzleState &State);
+
+		static bool  		IsTruePosition(PuzzleState State, int number, Point coord);
 		
 		
 };
