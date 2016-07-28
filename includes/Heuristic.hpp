@@ -10,6 +10,7 @@ class Heuristic
 		static int				Manhattan(std::vector< std::vector <int> > Values);
 		static int 				CasesWronglyPlaced(std::vector< std::vector <int> > Values);
 		static int 				CasesTrulyPlaced(std::vector< std::vector <int> > Values);
+		static int 				ManhattanImproved(std::vector< std::vector<int> > Values);
 
 	private: 
 		static	int				DistanceManhattan(Point *Source, Point *Target);

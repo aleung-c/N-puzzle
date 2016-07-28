@@ -54,6 +54,35 @@ int 				Heuristic::CasesTrulyPlaced(std::vector< std::vector <int> > Values)
     }
     return (nbTrue);
 }
+
+int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Values)
+{
+    int Distance = 0;
+    int x = 0;
+    int y = 0;
+    
+    std::vector<std::vector<int> > Tab(Values.size(), std::vector<int>(Values.size(), 0));
+    std::vector< std::vector<int> >::iterator row;
+    std::vector<int>::iterator col;
+
+    for (row = Values.begin(); row != Values.end(); row++, y++) 
+    {
+        for (col = row->begin(); col != row->end(); col++, x++) 
+        {
+             if ((Tab[y][x] = Heuristic::DistanceManhattan(new Point(col - row->begin(), row - Values.begin()), Heuristic::GetCoordFromValue(*col))) == 1)
+             {
+                if ((x - 1 >= 0 && Tab[y][x - 1] == 1) || (y - 1 >= 0 && Tab[y - 1][x] == 1))// ajouter une methode qui cheque la vrai position
+                {
+                    printf("x: %d y: %d\n", x, y);
+                    Distance += 2;
+                }
+             }
+             Distance += Tab[y][x];
+        }
+        x = 0;
+    }
+    return (Distance);
+}
 /***********************************End Of Public Method***********************************/
 
 /***********************************Private Method*****************************************/

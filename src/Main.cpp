@@ -50,9 +50,10 @@ int		main(int argc, char **argv)
 	}
 
 	/***** ZONE RADIOACTIVE *****/
-	/*printf("%d\n", Heuristic::CasesTrulyPlaced(Npuzzle.FirstState.Values)); 
-	printf("%d\n", Heuristic::CasesWronglyPlaced(Npuzzle.FirstState.Values));
-	printf("%d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));*/
+	printf("CTP: %d\n", Heuristic::CasesTrulyPlaced(Npuzzle.FirstState.Values)); 
+	printf("CWP: %d\n", Heuristic::CasesWronglyPlaced(Npuzzle.FirstState.Values));
+	printf("MAN: %d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));
+	printf("MANI: %d\n", Heuristic::ManhattanImproved(Npuzzle.FirstState.Values));
 	/***** FIN DE LA ZONE RADIOACTIVE *****/
 	return (0);
 }
