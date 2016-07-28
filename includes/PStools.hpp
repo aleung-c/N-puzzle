@@ -36,7 +36,4 @@ class PStools
 		static void			PrintPuzzleState(PuzzleState &State);
 
 		static bool  		IsTruePosition(PuzzleState State, int number, Point coord);
-		static void 		MakeTargetP(PuzzleState  &State, int PuzzleSize);
-		
-		
 };
