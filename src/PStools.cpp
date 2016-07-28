@@ -143,6 +143,11 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		y++;
 		curAdvance = 0;
 		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
 		while (curAdvance < maxAdvanceY && val < targetVal)
 		{
 			State.Values[y][x] = val;
@@ -154,6 +159,11 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		x--;
 		curAdvance = 0;
 		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
 		while (curAdvance < maxAdvanceX && val < targetVal)
 		{
 			State.Values[y][x] = val;
@@ -165,6 +175,11 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		y--;
 		curAdvance = 0;
 		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
 		while (curAdvance < maxAdvanceY && val < targetVal)
 		{
 			State.Values[y][x] = val;
@@ -176,6 +191,11 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		x++;
 		curAdvance = 0;
 		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
 	}
 	SetValuesString(State);
 

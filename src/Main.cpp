@@ -39,7 +39,7 @@ int		main(int argc, char **argv)
 		// ------ Starting PuzzleResolution;
 		Resolver		*Resolver = new Resolver::Resolver(&Npuzzle);
 
-		Resolver->Start();
+		//Resolver->Start();
 
 		// clean end;
 		delete Resolver;
