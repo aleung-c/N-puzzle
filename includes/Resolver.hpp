@@ -30,4 +30,6 @@ class Resolver
 		std::vector<PuzzleState>		ExpandState(PuzzleState &State);
 		PuzzleState						CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
 
+		std::vector<PuzzleState>		SelectStatesForOpenList(std::vector<PuzzleState> expandedStates);
+		bool							IsInClosedList(PuzzleState &State);
 };

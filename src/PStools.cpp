@@ -109,24 +109,96 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 	int y = 0;
 	int x = 0;
 	int val = 1;
+	int targetVal;
+	int curAdvance;
+	int maxAdvanceX;
+	int maxAdvanceY;
 
 	State.PuzzleSize = puzzleSize;
 	while (y < State.PuzzleSize)
 	{
 		std::vector<int> tmp;
-		while (x < State.PuzzleSize)
-		{
-			if (val == (State.PuzzleSize * State.PuzzleSize))
-				val = 0;
-			tmp.push_back(val);
-			x++;
-			val++;
-		}
+		tmp.resize(State.PuzzleSize, -1);
 		State.Values.push_back(tmp);
 		y++;
 		x = 0;
 	}
+	
+	y = 0;
+	x = 0;
+	targetVal = (State.PuzzleSize * State.PuzzleSize);
+	maxAdvanceX = State.PuzzleSize;
+	maxAdvanceY = State.PuzzleSize;
+	curAdvance = 0;
+	while (val < targetVal)
+	{
+		while (curAdvance < maxAdvanceX && val < targetVal)
+		{
+			State.Values[y][x] = val;
+			val++;
+			x++;
+			curAdvance++;
+		}
+		x--;
+		y++;
+		curAdvance = 0;
+		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
+		while (curAdvance < maxAdvanceY && val < targetVal)
+		{
+			State.Values[y][x] = val;
+			val++;
+			y++;
+			curAdvance++;
+		}
+		y--;
+		x--;
+		curAdvance = 0;
+		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
+		while (curAdvance < maxAdvanceX && val < targetVal)
+		{
+			State.Values[y][x] = val;
+			val++;
+			x--;
+			curAdvance++;
+		}
+		x++;
+		y--;
+		curAdvance = 0;
+		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
+		while (curAdvance < maxAdvanceY && val < targetVal)
+		{
+			State.Values[y][x] = val;
+			val++;
+			y--;
+			curAdvance++;
+		}
+		y++;
+		x++;
+		curAdvance = 0;
+		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			State.Values[y][x] = 0;
+			break ;
+		}
+	}
 	SetValuesString(State);
+
 }
 
 void		PStools::PrintPuzzleState(PuzzleState &State)

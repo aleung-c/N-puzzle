@@ -30,13 +30,8 @@ Resolver::~Resolver()
 
 void							Resolver::Start()
 {
-	
-
 	CurNpuzzle->NbOfMoves = 0;
-
 	AStarTurn(CurNpuzzle->FirstState);
-
-	
 }
 
 void						Resolver::AStarTurn(PuzzleState &State)
@@ -45,15 +40,24 @@ void						Resolver::AStarTurn(PuzzleState &State)
 
 	// Expand state;
 	State.Cost = CurNpuzzle->CurHeuristic(CurNpuzzle->FirstState.Values);
-	std::cout << "State Cost : " << CurNpuzzle->FirstState.Cost << "\n";
-	expandedStates = ExpandState(CurNpuzzle->FirstState);
+	std::cout << "State Cost : " << State.Cost << "\n";
+	
+	if ((std::strcmp(CurNpuzzle->TargetState.ValuesString.c_str(), State.ValuesString.c_str()) == 0))
+	{
+		// Current state is result --> Resolved;
+		std::cout << "End found" << std::endl;
+		exit (0);
+	}
+	CurNpuzzle->ClosedList.push_back(State);
+	expandedStates = ExpandState(State);
+
 
 	// Debug printing for state expansion.
 	for (int i = 0; i < (int)expandedStates.size(); i++)
 	{
-		std::cout << KGRN "new state created\n" KRESET;
-		PStools::PrintPuzzleState(expandedStates[i]);
-		/*if (!std::strcmp(CurNpuzzle->TargetState.ValuesString, expandedStates[i].ValuesString))
+		//std::cout << KGRN "new state created\n" KRESET;
+		//PStools::PrintPuzzleState(expandedStates[i]);
+		if (std::strcmp(CurNpuzzle->TargetState.ValuesString.c_str(), expandedStates[i].ValuesString.c_str()) != 0)
 		{
 			AStarTurn(expandedStates[i]);
 		}
@@ -62,14 +66,9 @@ void						Resolver::AStarTurn(PuzzleState &State)
 
 			std::cout << "End found" << std::endl;
 			exit (0);
-		}*/
+		}
 	}
-
-
-	
-
 }
-
 
 std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState &State)
 {
@@ -89,7 +88,7 @@ std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState &State)
 			if (*col == 0)
 			{
 				zeroPos.setCoord(x, y);
-				std::cout << *col << " found at " << zeroPos.getX() << "x " << zeroPos.getY() << "y\n";
+				//std::cout << *col << " found at " << zeroPos.getX() << "x " << zeroPos.getY() << "y\n";
 				State.ZeroPos = zeroPos;
 				// Up, right, down, left --> Clock wise rotation from zero;
 				// UP Position
@@ -153,8 +152,41 @@ PuzzleState		Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Po
 	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
 	NewState.ZeroPos = TmpPos;
 	NewState.ParentState = &State;
+	PStools::SetValuesString(NewState);
 	return (NewState);
 }
+
+std::vector<PuzzleState>		Resolver::SelectStatesForOpenList(std::vector<PuzzleState> expandedStates)
+{
+	for (int i = 0; i < (int)expandedStates.size(); i++)
+	{
+		return (expandedStates);
+	}
+	return (expandedStates);
+}
+
+bool						Resolver::IsInClosedList(PuzzleState &State)
+{
+	std::vector<PuzzleState> &ClosedList = CurNpuzzle->ClosedList;
+
+	for (int i = 0; i < (int)ClosedList.size(); i++)
+	{
+		// pour chaque element de la liste;
+		if (std::strcmp(State.ValuesString.c_str(), ClosedList[i].ValuesString.c_str()) == 0)
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
+
+
+
+
+
+
+
 
 
 
