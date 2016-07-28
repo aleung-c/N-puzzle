@@ -126,6 +126,7 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		y++;
 		x = 0;
 	}
+	SetValuesString(State);
 }
 
 void		PStools::PrintPuzzleState(PuzzleState &State)

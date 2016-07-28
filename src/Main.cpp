@@ -28,11 +28,10 @@ int		main(int argc, char **argv)
 		Npuzzle.SelectedHeuristicNb = 1;
 		Npuzzle.CurHeuristic = &Heuristic::Manhattan;
 
-		std::cout << "First state:" << std::endl;
+		std::cout << KBLU "First state:" KRESET << std::endl;
 		PStools::PrintPuzzleState(Npuzzle.FirstState);
-		PStools::PrintValuesString(Npuzzle.FirstState);
 
-		std::cout << "Target state:" << std::endl;
+		std::cout << KRED "Target state:" KRESET << std::endl;
 		// Npuzzle.TargetState.TargetState(Npuzzle.PuzzleSize); // modified.
 		PStools::MakeTarget(Npuzzle.TargetState, Npuzzle.PuzzleSize);
 		PStools::PrintPuzzleState(Npuzzle.TargetState);

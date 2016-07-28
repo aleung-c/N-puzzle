@@ -28,13 +28,26 @@
 # include <regex>
 # include <random>
 
+// color in text;
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+#define KRESET "\x1B[0m"
+
 class		Heuristic;
+class		Point;
 class		PuzzleState;
 class		InitPuzzle;
-class		Point;
 class		Resolver;
 class		PStools;
 
+// Placed first for include compilation order;
+#include "Point.hpp"
 #include "PuzzleState.hpp"
 
 /*
@@ -42,24 +55,30 @@ class		PStools;
 */
 typedef struct 					s_NpuzzleData
 {
+	// Start settings
 	int							PuzzleSize;
 	int							SelectedHeuristicNb;
 
 	// Pointer to selected heuristic fonction;
 	int							(*CurHeuristic)(std::vector< std::vector <int> > Values);
 
+	// Initials values to be modified at runtime;
 	PuzzleState					FirstState;
 	PuzzleState					TargetState;
 
 	std::vector<PuzzleState>	OpenedList;
 	std::vector<PuzzleState>	ClosedList;
+
+	// Running Datas
+	int 						NbOfMoves; // nb of moves till solution found.
+
 }								t_NpuzzleData;
 
 #include "Heuristic.hpp"
 #include "InitPuzzle.hpp"
-#include "Point.hpp"
 #include "Resolver.hpp"
 #include "PStools.hpp"
+
 
 
 #endif

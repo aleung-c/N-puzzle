@@ -25,7 +25,9 @@ class Resolver
 		t_NpuzzleData					*CurNpuzzle;
 
 		void							Start();
+		void							AStarTurn(PuzzleState &State);
 	
-		std::vector<PuzzleState>		ExpandState(PuzzleState State);
+		std::vector<PuzzleState>		ExpandState(PuzzleState &State);
+		PuzzleState						CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
 
 };

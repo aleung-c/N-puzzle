@@ -29,6 +29,9 @@ class PuzzleState
 		// Precedent node in the A* implementation;
 		PuzzleState 						*ParentState;
 
+		// Zero position to avoid useless loops;
+		Point								ZeroPos;
+
 		// cost set by selected Heuristic;
 		int									Cost;
 

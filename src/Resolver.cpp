@@ -30,35 +30,57 @@ Resolver::~Resolver()
 
 void							Resolver::Start()
 {
-	std::vector<PuzzleState>	expandedStates;
+	
 
-	if (CurNpuzzle)
-	{
-		// Expand first state;
-		CurNpuzzle->FirstState.Cost = CurNpuzzle->CurHeuristic(CurNpuzzle->FirstState.Values);
+	CurNpuzzle->NbOfMoves = 0;
 
-		std::cout << "First State Cost : " << CurNpuzzle->FirstState.Cost << "\n";
+	AStarTurn(CurNpuzzle->FirstState);
 
-		expandedStates = ExpandState(CurNpuzzle->FirstState);
-
-
-	}
+	
 }
 
-std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState State)
+void						Resolver::AStarTurn(PuzzleState &State)
 {
+	std::vector<PuzzleState>	expandedStates;
 
-	std::vector< std::vector<int> >::iterator	row;
-	std::vector<int>::iterator					col;
+	// Expand state;
+	State.Cost = CurNpuzzle->CurHeuristic(CurNpuzzle->FirstState.Values);
+	std::cout << "State Cost : " << CurNpuzzle->FirstState.Cost << "\n";
+	expandedStates = ExpandState(CurNpuzzle->FirstState);
+
+	// Debug printing for state expansion.
+	for (int i = 0; i < (int)expandedStates.size(); i++)
+	{
+		std::cout << KGRN "new state created\n" KRESET;
+		PStools::PrintPuzzleState(expandedStates[i]);
+		/*if (!std::strcmp(CurNpuzzle->TargetState.ValuesString, expandedStates[i].ValuesString))
+		{
+			AStarTurn(expandedStates[i]);
+		}
+		else
+		{
+
+			std::cout << "End found" << std::endl;
+			exit (0);
+		}*/
+	}
+
+
 	
+
+}
+
+
+std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState &State)
+{
 	std::vector<PuzzleState>					RetStates;
 
-	Point										ZeroPos;
+	Point										zeroPos;
 	Point										TmpPos;
-	//int											TmpVal;
-
-	int y = 0;
-	int x = 0;
+	std::vector< std::vector<int> >::iterator	row;
+	std::vector<int>::iterator					col;
+	int											y = 0;
+	int											x = 0;
 
 	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
 	{
@@ -66,20 +88,54 @@ std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState State)
 		{
 			if (*col == 0)
 			{
-				ZeroPos.setCoord(x, y);
-				std::cout << *col << " found at " << ZeroPos.getX() << "x " << ZeroPos.getY() << "y\n";
-
+				zeroPos.setCoord(x, y);
+				std::cout << *col << " found at " << zeroPos.getX() << "x " << zeroPos.getY() << "y\n";
+				State.ZeroPos = zeroPos;
 				// Up, right, down, left --> Clock wise rotation from zero;
-				
-				if (ZeroPos.getY() - 1 >= 0) // up pos free ?
+				// UP Position
+				if ((zeroPos.getY() - 1) >= 0) // UP pos free ?
 				{
-					TmpPos =  ZeroPos;
-					// Create new state, swap values.
-					//std::cout << "new state created\n";
+					// Get required values for swap
+					TmpPos = zeroPos;
+					TmpPos.setY(zeroPos.getY() - 1);
 
-					// Declare new state;
+					// Create and set values of new state;
 					PuzzleState			NewState;
-					NewState = State;
+					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					RetStates.push_back(NewState);
+				}
+
+				// RIGHT Position (see UP pos for comments)
+				if ((zeroPos.getX() + 1) < State.PuzzleSize)
+				{
+					TmpPos = zeroPos;
+					TmpPos.setX(zeroPos.getX() + 1);
+
+					PuzzleState			NewState;
+					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					RetStates.push_back(NewState);
+				}
+
+				// DOWN Position (see UP pos for comments)
+				if ((zeroPos.getY() + 1) < State.PuzzleSize)
+				{
+					TmpPos = zeroPos;
+					TmpPos.setY(zeroPos.getY() + 1);
+
+					PuzzleState			NewState;
+					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					RetStates.push_back(NewState);
+				}
+
+				// LEFT Position (see UP pos for comments)
+				if ((zeroPos.getX() - 1) >= 0)
+				{
+					TmpPos = zeroPos;
+					TmpPos.setX(zeroPos.getX() - 1);
+
+					PuzzleState			NewState;
+					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					RetStates.push_back(NewState);
 				}
 			}
 		}
@@ -89,6 +145,16 @@ std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState State)
 	return (RetStates);
 }
 
+PuzzleState		Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos)
+{
+	PuzzleState			NewState;
+
+	NewState = State;
+	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
+	NewState.ZeroPos = TmpPos;
+	NewState.ParentState = &State;
+	return (NewState);
+}
 
 
 
