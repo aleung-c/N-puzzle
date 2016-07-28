@@ -18,13 +18,22 @@
 class PStools
 {
 	public:
-		static int			GetStateValue(PuzzleState &State, Point coord);
-		static int			GetStateValueFromStr(PuzzleState &State, Point coord);
-		static void			ChangeStateValue(PuzzleState &State, Point coord,
-												int newVal);
-		static void			PrintPuzzleState(PuzzleState &State);
+		// Totally change the puzzle;
 		static void			MakeDefault(PuzzleState &State);
 		static void			MakeTarget(PuzzleState &State, int puzzleSize);
+
+		// Operations on puzzle Values.
+		static int			GetStateValue(PuzzleState &State, Point coord);
+		static int			GetStateValueFromStr(PuzzleState &State, Point coord);
+		static void			ChangeStateValue(PuzzleState &State, Point coord,int newVal);
+		static void 		SwapPuzzleValues(PuzzleState &State, Point Pos1, Point Pos2);
+
+		// Operations on ValuesString
 		static void			SetValuesString(PuzzleState &State);
+
+		// Debug / printing
 		static void			PrintValuesString(PuzzleState &State);
+		static void			PrintPuzzleState(PuzzleState &State);
+		
+		
 };
