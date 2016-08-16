@@ -25,11 +25,18 @@ class Resolver
 		t_NpuzzleData					*CurNpuzzle;
 
 		void							Start();
+		bool							IsPuzzleSolvable(PuzzleState &State);
+
 		void							AStarTurn(PuzzleState &State);
 	
 		std::vector<PuzzleState>		ExpandState(PuzzleState &State);
 		PuzzleState						CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
 
-		std::vector<PuzzleState>		SelectStatesForOpenList(std::vector<PuzzleState> expandedStates);
-		bool							IsInClosedList(PuzzleState &State);
+		void							AddStatesToOpenList(std::vector<PuzzleState> expandedStates);
+		bool							IsInList(std::vector<PuzzleState> &List, PuzzleState &State);
+
+		PuzzleState						&SelectOpenListState(PuzzleState &State);
+
+		void							EndFound(PuzzleState &State);
+
 };

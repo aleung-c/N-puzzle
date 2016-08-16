@@ -103,7 +103,9 @@ void PStools::SwapPuzzleValues(PuzzleState &State, Point Pos1, Point Pos2)
 	(State.Values[Pos2.getY()])[Pos2.getX()] = tmp;
 }
 
-
+/*
+**	Create the snail solution.
+*/
 void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 {
 	int y = 0;
@@ -219,6 +221,18 @@ void		PStools::PrintPuzzleState(PuzzleState &State)
 		x = 0;
 	}
 	std::cout << "\n";
+}
+
+void		PStools::RemoveStateFromVector(std::vector<PuzzleState> &List, PuzzleState &StateToRemove)
+{
+	for (int i = 0 ; i < (int)List.size(); i++)
+	{
+		if ((std::strcmp(List[i].ValuesString.c_str(), StateToRemove.ValuesString.c_str()) == 0))
+		{
+			List.erase(List.begin() + i);
+			return ;
+		}
+	}
 }
 
 void		PStools::SetValuesString(PuzzleState &State)

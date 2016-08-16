@@ -27,6 +27,8 @@
 # include <string>
 # include <regex>
 # include <random>
+# include <algorithm>
+# include <math.h>
 
 // color in text;
 #define KNRM  "\x1B[0m"

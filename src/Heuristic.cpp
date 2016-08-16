@@ -91,7 +91,7 @@ int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Va
 /***********************************Private Method*****************************************/
 int					Heuristic::DistanceManhattan(Point *Source, Point *Target)
 {
-	 return (std::abs(Target->getX() - Source->getX()) + std::abs(Target->getY() - Source->getY()));
+	 return (std::sqrt((Target->getX() - Source->getX()) * (Target->getX() - Source->getX()) + (Target->getY() - Source->getY()) * (Target->getY() - Source->getY())));
 }
 
 Point				*Heuristic::GetCoordFromValue(int Value)

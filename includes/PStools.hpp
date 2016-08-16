@@ -28,6 +28,9 @@ class PStools
 		static void			ChangeStateValue(PuzzleState &State, Point coord,int newVal);
 		static void 		SwapPuzzleValues(PuzzleState &State, Point Pos1, Point Pos2);
 
+		// Operations on Vectors
+		static void			RemoveStateFromVector(std::vector<PuzzleState> &List, PuzzleState &StateToRemove);
+
 		// Operations on ValuesString
 		static void			SetValuesString(PuzzleState &State);
 
