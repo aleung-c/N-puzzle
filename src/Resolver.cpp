@@ -46,7 +46,7 @@ void						Resolver::Start()
 /*
 **	Peut on resoudre ce puzzle ? 
 */
-bool					Resolver::IsPuzzleSolvable(PuzzleState &State) // NOT WORKING...
+bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 {
 	Point 										ZeroStartPos;
 	Point 										ZeroTargetPos;
@@ -57,6 +57,7 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State) // NOT WORKING...
 	int x = 0;
 	int y = 0;
 
+	// =====> parite du zero //
 	// get First state Zero pos;
 	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
 	{
@@ -89,11 +90,45 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State) // NOT WORKING...
 	ManhattanDistanceState = Heuristic::Manhattan(State.Values);
 	ManhattanDistanceZero = std::sqrt((ZeroTargetPos.getX() - ZeroStartPos.getX()) * (ZeroTargetPos.getX() - ZeroStartPos.getX())
 									+ (ZeroTargetPos.getY() - ZeroStartPos.getY()) * (ZeroTargetPos.getY() - ZeroStartPos.getY()));
-	
+
+
+	// =====> parite du puzzle // TODO : new technique a tester.
+	std::vector <int> 		MergedPuzzleValues;
+
+	x = 0;
+	y = 0;
+	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
+	{
+		for (col = row->begin(); col != row->end(); col++, x++) 
+		{
+			MergedPuzzleValues.push_back(*col);
+		}
+	}
+
+	std::vector <int>::iterator		val;
+	for (val = MergedPuzzleValues.begin(); val != MergedPuzzleValues.end(); val++)
+	{
+		std::cout << std::to_string(*val) << " ";
+	}
+
+	int swapNb = 0;
+	// sort this array to know if the needed swap moves are even or odd;
+	for (val = MergedPuzzleValues.begin(); val != MergedPuzzleValues.end(); val++)
+	{
+		if (*val > *(val + 1))
+		{
+			std::iter_swap(val, val + 1);
+			val = MergedPuzzleValues.begin();
+			swapNb += 1;
+		}
+
+	}
+
+	ManhattanDistanceState = swapNb + 1;
 	if ((ManhattanDistanceState % 2 != 0 && ManhattanDistanceZero % 2 != 0) || (ManhattanDistanceState % 2 == 0 && ManhattanDistanceZero % 2 == 0))
 	{
 		std::cout << "Solubilité test = parite identique | state = " << ManhattanDistanceState << " ; Zero = " << ManhattanDistanceZero << std::endl;
-		sleep(1);
+		sleep(6);
 		return (true);
 	}
 	std::cout << "Solubilité test = parite NON identique | state = " << ManhattanDistanceState << " ; Zero = " << ManhattanDistanceZero << std::endl;

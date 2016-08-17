@@ -26,7 +26,7 @@ int		main(int argc, char **argv)
 
 		// TODO: Selecting Heuristic dynamically.
 		Npuzzle.SelectedHeuristicNb = 1;
-		Npuzzle.CurHeuristic = &Heuristic::Manhattan;
+		Npuzzle.CurHeuristic = &Heuristic::CasesWronglyPlaced;
 
 		std::cout << KBLU "First state:" KRESET << std::endl;
 		PStools::PrintPuzzleState(Npuzzle.FirstState);
@@ -50,7 +50,7 @@ int		main(int argc, char **argv)
 	}
 
 	/***** ZONE RADIOACTIVE *****/
-	printf("CTP: %d\n", Heuristic::CasesTrulyPlaced(Npuzzle.FirstState.Values)); 
+	printf("CTP: %d\n", Heuristic::CasesTrulyPlaced(Npuzzle.FirstState.Values));
 	printf("CWP: %d\n", Heuristic::CasesWronglyPlaced(Npuzzle.FirstState.Values));
 	printf("MAN: %d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));
 	printf("MANI: %d\n", Heuristic::ManhattanImproved(Npuzzle.FirstState.Values));
