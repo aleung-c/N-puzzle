@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <iterator>
 # include <cstdlib>
 # include <iostream>
 # include <fstream>
@@ -61,6 +62,7 @@ typedef struct 					s_NpuzzleData
 	int							PuzzleSize;
 	int							SelectedHeuristicNb;
 
+	bool						DisplayTurns;
 	// Pointer to selected heuristic fonction;
 	int							(*CurHeuristic)(std::vector< std::vector <int> > Values);
 

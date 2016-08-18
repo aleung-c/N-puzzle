@@ -26,6 +26,7 @@ int		main(int argc, char **argv)
 
 		// TODO: Selecting Heuristic dynamically.
 		Npuzzle.SelectedHeuristicNb = 1;
+		Npuzzle.DisplayTurns = true;
 		Npuzzle.CurHeuristic = &Heuristic::CasesWronglyPlaced;
 
 		std::cout << KBLU "First state:" KRESET << std::endl;

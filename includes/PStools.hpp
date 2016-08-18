@@ -30,6 +30,7 @@ class PStools
 
 		// Operations on Vectors
 		static void			RemoveStateFromVector(std::vector<PuzzleState> &List, PuzzleState &StateToRemove);
+		static Point		GetPuzzleZeroPosition(PuzzleState &State);
 
 		// Operations on ValuesString
 		static void			SetValuesString(PuzzleState &State);
@@ -39,4 +40,8 @@ class PStools
 		static void			PrintPuzzleState(PuzzleState &State);
 
 		static bool  		IsTruePosition(PuzzleState State, int number, Point coord);
+
+		// Other tools
+		static bool			IsEven(int value);
+		static bool			IsOdd(int value);		
 };

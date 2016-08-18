@@ -235,6 +235,31 @@ void		PStools::RemoveStateFromVector(std::vector<PuzzleState> &List, PuzzleState
 	}
 }
 
+Point		PStools::GetPuzzleZeroPosition(PuzzleState &State)
+{
+	std::vector< std::vector<int> >::iterator	row;
+	std::vector<int>::iterator					col;
+	int											x;
+	int											y;
+	Point										retPos;
+
+	x = 0;
+	y = 0;
+	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
+	{
+		for (col = row->begin(); col != row->end(); col++, x++) 
+		{
+			if (*col == 0)
+			{
+				retPos.setX(x);
+				retPos.setY(y);
+				return (retPos);
+			}
+		}
+	}
+	return (retPos);
+}
+
 void		PStools::SetValuesString(PuzzleState &State)
 {
 	int y = 0;
@@ -265,4 +290,20 @@ bool  		PStools::IsTruePosition(PuzzleState State, int number, Point coord)
 	if (State.Values[coord.getY()][coord.getX()] == number)
 		return (true);
 	return (false);
+}
+
+bool			PStools::IsEven(int value)
+{
+	if (value % 2 == 0)
+		return true;
+	else
+		return false;
+}
+
+bool			PStools::IsOdd(int value)
+{
+	if (value % 2 != 0)
+		return true;
+	else
+		return false;
 }
