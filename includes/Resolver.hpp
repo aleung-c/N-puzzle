@@ -25,7 +25,10 @@ class Resolver
 		t_NpuzzleData					*CurNpuzzle;
 
 		void							Start();
+
 		bool							IsPuzzleSolvable(PuzzleState &State);
+
+		int								getInvCount(std::vector<int> arr);
 
 		void							AStarTurn(PuzzleState &State);
 	

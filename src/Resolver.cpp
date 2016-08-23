@@ -46,6 +46,7 @@ void						Resolver::Start()
 /*
 **	Peut on resoudre ce puzzle ? 
 */
+
 bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 {
 	Point 										ZeroStartPos;
@@ -87,7 +88,7 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 
 	unsigned int				swapNb = 0;
 	// sort this array to know if the needed inversions moves are even or odd;
-	for (val = MergedPuzzleValues.begin(); val != MergedPuzzleValues.end(); val++)
+	/*for (val = MergedPuzzleValues.begin(); val != MergedPuzzleValues.end(); val++)
 	{
 		if (val + 1 != MergedPuzzleValues.end() && *val > *(val + 1))
 		{
@@ -100,13 +101,14 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 			}
 			val = MergedPuzzleValues.begin();
 		}
-	}
-
-	// Formula for sovability
+	}*/
+		swapNb = getInvCount(MergedPuzzleValues);
+	// Formula for sovability for non snail tile game ...
 	//( (grid width odd) && (#inversions even) )  ||  ( (grid width even) && ((blank on odd row from bottom) == (#inversions even)) )
-
-
-	if (PStools::IsOdd(CurNpuzzle->PuzzleSize) && PStools::IsEven(swapNb))
+	if (
+		PStools::IsOdd(CurNpuzzle->PuzzleSize)
+		&& PStools::IsEven(swapNb)
+		)
 	{
 		// odd grid width. even number of inversion ==> solvable;
 		std::cout << "solvable -> grid width odd, inversions even." << std::endl;
@@ -118,7 +120,12 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 		return (true);
 	}
 
-	if (PStools::IsEven(CurNpuzzle->PuzzleSize) && PStools::IsEven(CurNpuzzle->PuzzleSize - (ZeroStartPos.getY())) && PStools::IsOdd(swapNb))
+	//if (PStools::IsEven(CurNpuzzle->PuzzleSize) && PStools::IsEven(CurNpuzzle->PuzzleSize - (ZeroStartPos.getY())) && PStools::IsOdd(swapNb))
+	if (
+		PStools::IsEven(CurNpuzzle->PuzzleSize) 
+		&& PStools::IsEven(abs(ZeroStartPos.getX() - ZeroStartPos.getX()) + abs(ZeroStartPos.getY() - ZeroStartPos.getY())) 
+		&& PStools::IsOdd(swapNb)
+		)
 	{
 		std::cout << "solvable -> grid width even, blank on even row from the bottom, inversion odd" << std::endl;
 
@@ -129,7 +136,12 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 		return (true);
 	}
 
-	if (PStools::IsEven(CurNpuzzle->PuzzleSize) && PStools::IsOdd(CurNpuzzle->PuzzleSize - (ZeroStartPos.getY())) && PStools::IsEven(swapNb))
+	//if (PStools::IsEven(CurNpuzzle->PuzzleSize) && PStools::IsOdd(CurNpuzzle->PuzzleSize - (ZeroStartPos.getY())) && PStools::IsEven(swapNb))
+	if (
+		PStools::IsEven(CurNpuzzle->PuzzleSize)
+		&& PStools::IsOdd(abs(ZeroStartPos.getX() - ZeroStartPos.getX()) + abs(ZeroStartPos.getY() - ZeroStartPos.getY()))
+		&& PStools::IsEven(swapNb)
+		)
 	{
 		std::cout << "solvable -> grid width even, blank on odd row from the bottom, inversion even" << std::endl;
 
@@ -151,6 +163,19 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 	read(0, NULL, 1);
 	return (true);
 }
+
+// A utility function to count inversions in given array 'arr[]'
+int							Resolver::getInvCount(std::vector<int> arr)
+{
+    int inv_count = 0;
+    for (int i = 0; i < 9 - 1; i++)
+        for (int j = i+1; j < 9; j++)
+             // Value 0 is used for empty space
+             if (arr[j] && arr[i] &&  arr[i] > arr[j])
+                  inv_count++;
+    return inv_count;
+}
+
 
 void						Resolver::AStarTurn(PuzzleState &State)
 {

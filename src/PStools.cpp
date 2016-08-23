@@ -294,7 +294,7 @@ bool  		PStools::IsTruePosition(PuzzleState State, int number, Point coord)
 
 bool			PStools::IsEven(int value)
 {
-	if (value % 2 == 0)
+	if ((value % 2) == 0)
 		return true;
 	else
 		return false;
@@ -302,7 +302,7 @@ bool			PStools::IsEven(int value)
 
 bool			PStools::IsOdd(int value)
 {
-	if (value % 2 != 0)
+	if ((value % 2) != 0)
 		return true;
 	else
 		return false;
