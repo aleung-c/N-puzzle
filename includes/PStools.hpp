@@ -21,6 +21,7 @@ class PStools
 		// Totally change the puzzle;
 		static void			MakeDefault(PuzzleState &State);
 		static void			MakeTarget(PuzzleState &State, int puzzleSize);
+		static std::vector<int>		GetMergedValuesFromSnailState(PuzzleState &State);
 
 		// Operations on puzzle Values.
 		static int			GetStateValue(PuzzleState &State, Point coord);

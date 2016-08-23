@@ -74,7 +74,8 @@ typedef struct 					s_NpuzzleData
 	std::vector<PuzzleState>	ClosedList;
 
 	// Running Datas
-	int 						NbOfMoves; // nb of moves till solution found.
+	int 						ResolverTurn; // ==> complexity in time;
+	int 						NbOfMoves; // nb of games moves till solution found.
 
 }								t_NpuzzleData;
 

@@ -200,7 +200,103 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 		}
 	}
 	SetValuesString(State);
+}
 
+std::vector<int>		PStools::GetMergedValuesFromSnailState(PuzzleState &State)
+{
+	int y = 0;
+	int x = 0;
+	int val = 1;
+	int targetVal;
+	int curAdvance;
+	int maxAdvanceX;
+	int maxAdvanceY;
+	std::vector<int> MergedValues;
+
+	//State.PuzzleSize = puzzleSize;
+	//while (y < State.PuzzleSize)
+	//{
+		//std::vector<int> tmp;
+		//tmp.resize(State.PuzzleSize, -1);
+		//State.Values.push_back(tmp);
+	//	y++;
+	//	x = 0;
+	//}
+	
+	y = 0;
+	x = 0;
+	targetVal = (State.PuzzleSize * State.PuzzleSize);
+	maxAdvanceX = State.PuzzleSize;
+	maxAdvanceY = State.PuzzleSize;
+	curAdvance = 0;
+	while (val < targetVal)
+	{
+		while (curAdvance < maxAdvanceX && val < targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			val++;
+			x++;
+			curAdvance++;
+		}
+		x--;
+		y++;
+		curAdvance = 0;
+		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			return (MergedValues);
+		}
+		while (curAdvance < maxAdvanceY && val < targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			val++;
+			y++;
+			curAdvance++;
+		}
+		y--;
+		x--;
+		curAdvance = 0;
+		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			return (MergedValues);
+		}
+		while (curAdvance < maxAdvanceX && val < targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			val++;
+			x--;
+			curAdvance++;
+		}
+		x++;
+		y--;
+		curAdvance = 0;
+		maxAdvanceY -= 1;
+		if (val == targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			return (MergedValues);
+		}
+		while (curAdvance < maxAdvanceY && val < targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			val++;
+			y--;
+			curAdvance++;
+		}
+		y++;
+		x++;
+		curAdvance = 0;
+		maxAdvanceX -= 1;
+		if (val == targetVal)
+		{
+			MergedValues.push_back(State.Values[y][x]);
+			return (MergedValues);
+		}
+	}
+	return (MergedValues);
 }
 
 void		PStools::PrintPuzzleState(PuzzleState &State)
