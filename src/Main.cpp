@@ -39,9 +39,7 @@ int		main(int argc, char **argv)
 
 		// ------ Starting PuzzleResolution;
 		Resolver		*Resolver = new Resolver::Resolver(&Npuzzle);
-
 		Resolver->Start();
-
 		// clean end;
 		delete Resolver;
 	}
@@ -56,5 +54,6 @@ int		main(int argc, char **argv)
 	printf("MAN: %d\n", Heuristic::Manhattan(Npuzzle.FirstState.Values));
 	printf("MANI: %d\n", Heuristic::ManhattanImproved(Npuzzle.FirstState.Values));
 	/***** FIN DE LA ZONE RADIOACTIVE *****/
+
 	return (0);
 }

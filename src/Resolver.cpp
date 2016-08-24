@@ -37,6 +37,7 @@ void						Resolver::Start()
 	// Solubilité test
 	if (IsPuzzleSolvable(CurNpuzzle->FirstState) == false)
 	{
+
 		// ◦ The puzzle may be unsolvable, in which case you have to inform the user and exit
 		std:: cout << "Puzzle not resolvable, exiting." << std::endl;
 		exit (0);
@@ -61,14 +62,18 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 	// =====> get puzzle datas.
 	// get First state Zero pos;
 	ZeroStartPos = PStools::GetPuzzleZeroPosition(State);
+
 	// get Target state Zero pos;
 	ZeroTargetPos = PStools::GetPuzzleZeroPosition(CurNpuzzle->TargetState);
+
 	ManhattanDistanceState = Heuristic::Manhattan(State.Values);
 	ManhattanDistanceZero = abs(ZeroTargetPos.getX() - ZeroStartPos.getX()) + abs(ZeroTargetPos.getY() - ZeroStartPos.getY());
 	MergedPuzzleValues = PStools::GetMergedValuesFromSnailState(State);	// straight 1D array values.
 	// get number of inversion in puzzle for regular puzzle;
+
 	unsigned int				swapNb = getInvCount(MergedPuzzleValues);
 
+	MergedPuzzleValues.clear();
 	// Display puzzle analysis informations.
 	std::cout << KGRN "Puzzle Datas:" KRESET << std::endl;
 	std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
@@ -175,6 +180,7 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 		PathFromStart.push_back(*tmp); // <-- !! It's reversed !!
 		tmp = tmp->ParentState;
 	}
+	CurNpuzzle->NbOfMoves -= 1;
 
 	std::cout << "Nb of Moves required from Start to End: " << CurNpuzzle->NbOfMoves << std::endl << std::endl;
 	std::cout << "*** press Return to see puzzle resolution ***" << std::endl;
@@ -187,9 +193,6 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 		PStools::PrintPuzzleState(*it);
 		CurNbOfMoves += 1;
 	}
-
-
-	exit (0);
 }
 
 void							Resolver::ExpandState(PuzzleState &State)

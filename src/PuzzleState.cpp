@@ -12,14 +12,14 @@
 
 #include "../includes/Npuzzle.hpp"
 
-		PuzzleState::PuzzleState() : ParentState(NULL)
+PuzzleState::PuzzleState() : ParentState(NULL)
 {
 
 }
 
-		PuzzleState::~PuzzleState()
+PuzzleState::~PuzzleState()
 {
-
+	
 }
 
 PuzzleState			&PuzzleState::operator=(const PuzzleState& other)
