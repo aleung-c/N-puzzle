@@ -32,8 +32,8 @@ class Resolver
 
 		void							AStarTurn(PuzzleState &State);
 	
-		std::vector<PuzzleState>		ExpandState(PuzzleState &State);
-		PuzzleState						CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
+		void							ExpandState(PuzzleState &State);
+		void							CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
 
 		void							AddStatesToOpenList(std::vector<PuzzleState> expandedStates);
 		bool							IsInList(std::vector<PuzzleState> &List, PuzzleState &State);
@@ -41,5 +41,8 @@ class Resolver
 		PuzzleState						&SelectOpenListState(PuzzleState &State);
 
 		void							EndFound(PuzzleState &State);
+
+	private:
+		PuzzleState						NewState; // tmp use;
 
 };

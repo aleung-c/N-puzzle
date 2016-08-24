@@ -204,24 +204,14 @@ void		PStools::MakeTarget(PuzzleState &State, int puzzleSize)
 
 std::vector<int>		PStools::GetMergedValuesFromSnailState(PuzzleState &State)
 {
-	int y = 0;
-	int x = 0;
-	int val = 1;
-	int targetVal;
-	int curAdvance;
-	int maxAdvanceX;
-	int maxAdvanceY;
-	std::vector<int> MergedValues;
-
-	//State.PuzzleSize = puzzleSize;
-	//while (y < State.PuzzleSize)
-	//{
-		//std::vector<int> tmp;
-		//tmp.resize(State.PuzzleSize, -1);
-		//State.Values.push_back(tmp);
-	//	y++;
-	//	x = 0;
-	//}
+	int					y = 0;
+	int					x = 0;
+	int					val = 1;
+	int					targetVal;
+	int					curAdvance;
+	int					maxAdvanceX;
+	int					maxAdvanceY;
+	std::vector<int>	MergedValues;
 	
 	y = 0;
 	x = 0;
@@ -309,14 +299,14 @@ void		PStools::PrintPuzzleState(PuzzleState &State)
 	{
 		while (x < State.PuzzleSize)
 		{
-			std::cout << (State.Values[y])[x] << " ";
+			printf("%d ", (State.Values[y])[x]); // faster than std::cout;
 			x++;
 		}
-		std::cout << "\n";
+		std::cout << std::endl;
 		y++;
 		x = 0;
 	}
-	std::cout << "\n";
+	std::cout << std::endl;
 }
 
 void		PStools::RemoveStateFromVector(std::vector<PuzzleState> &List, PuzzleState &StateToRemove)

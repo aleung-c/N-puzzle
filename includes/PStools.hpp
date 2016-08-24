@@ -44,5 +44,5 @@ class PStools
 
 		// Other tools
 		static bool			IsEven(int value);
-		static bool			IsOdd(int value);		
+		static bool			IsOdd(int value);
 };
