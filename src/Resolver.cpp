@@ -121,7 +121,7 @@ void						Resolver::AStarTurn(PuzzleState &State)
 		{
 			printf(KGRN "Turn %d\n" KRESET, CurNpuzzle->ResolverTurn);
 			PStools::PrintPuzzleState(CurState);
-			printf("State Cost : %d", CurState.Cost);
+			printf("State Cost : %d\n", CurState.Cost);
 		}
 		// End Turn Status display
 		// ===> Check if end reached;
@@ -141,7 +141,7 @@ void						Resolver::AStarTurn(PuzzleState &State)
 		if (CurNpuzzle->DisplayTurns == true)
 		{
 			printf("Open list size = %lu\n", CurNpuzzle->OpenedList.size());
-			printf("Closed list size = %lu\n", CurNpuzzle->ClosedList.size());
+			printf("Closed list size = %lu\n\n", CurNpuzzle->ClosedList.size());
 		}
 		CurState = SelectOpenListState(State);
 		//sleep(1);
