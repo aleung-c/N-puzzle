@@ -27,7 +27,7 @@ PuzzleState			&PuzzleState::operator=(const PuzzleState& other)
 	PuzzleSize = other.PuzzleSize;
 	Values = other.Values;
 	ValuesString = other.ValuesString;
-	ParentState = NULL;
+	ParentState = other.ParentState;
 	Cost = other.Cost;
 	ZeroPos = other.ZeroPos;
 	return (*this);

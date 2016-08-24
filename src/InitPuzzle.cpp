@@ -59,13 +59,13 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 		// only -g and a number. generate puzzle from size given in arg.
 		Npuzzle->PuzzleSize = std::atoi(argv[2]);
 		ReturnedFirstState = GenerateRandomizedPuzzle(std::atoi(argv[2]));
-		
 	}
 	else
 	{
 		PrintUsage(argv[0]);
 		exit(-1);
 	}
+	ReturnedFirstState.ParentState = NULL;
 	return (ReturnedFirstState);
 }
 

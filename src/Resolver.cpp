@@ -48,7 +48,7 @@ void						Resolver::Start()
 /*
 **	Peut on resoudre ce puzzle ? 
 */
-bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
+bool					Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 and 4 puzzles.
 {
 	Point 										ZeroStartPos;
 	Point 										ZeroTargetPos;
@@ -58,27 +58,17 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 	std::vector<int>::iterator					col;
 	std::vector<int> 							MergedPuzzleValues;
 
-	// =====> parite du zero //
+	// =====> get puzzle datas.
 	// get First state Zero pos;
 	ZeroStartPos = PStools::GetPuzzleZeroPosition(State);
 	// get Target state Zero pos;
 	ZeroTargetPos = PStools::GetPuzzleZeroPosition(CurNpuzzle->TargetState);
 	ManhattanDistanceState = Heuristic::Manhattan(State.Values);
 	ManhattanDistanceZero = abs(ZeroTargetPos.getX() - ZeroStartPos.getX()) + abs(ZeroTargetPos.getY() - ZeroStartPos.getY());
-
-	// =====> parite du puzzle
-	// put the puzzle in straight 1 dimension vector
-	MergedPuzzleValues = PStools::GetMergedValuesFromSnailState(State);
-	
+	MergedPuzzleValues = PStools::GetMergedValuesFromSnailState(State);	// straight 1D array values.
 	// get number of inversion in puzzle for regular puzzle;
 	unsigned int				swapNb = getInvCount(MergedPuzzleValues);
 
-	// debug printing
-	/*std::vector <int>::iterator		val;
-	for (val = MergedPuzzleValues.begin(); val != MergedPuzzleValues.end(); val++)
-	{
-		std::cout << std::to_string(*val) << " ";
-	}*/
 	// Display puzzle analysis informations.
 	std::cout << "Pwidth : " << CurNpuzzle->PuzzleSize << std::endl;
 	std::cout << "StartState Manhattan dist : " << ManhattanDistanceState << std::endl;
@@ -86,26 +76,13 @@ bool					Resolver::IsPuzzleSolvable(PuzzleState &State)
 	std::cout << "Inversion Nb : " << swapNb << std::endl;
 	std::cout << "Zero Y pos : " << ZeroStartPos.getY() << std::endl;
 
-	// odd boards
-	if (PStools::IsOdd(CurNpuzzle->PuzzleSize)
-		&& PStools::IsEven(ManhattanDistanceState + swapNb))
+	if (PStools::IsEven(ManhattanDistanceState + swapNb))
 	{
-		std::cout << "SOLVABLE -> grid width odd, inversions + manhattan even." << std::endl;
+		std::cout << "SOLVABLE -> inversions + manhattan even." << std::endl;
 		std::cout << "*** press ctrl + D to launch resolution of the puzzle ***" << std::endl;
 		read(0, NULL, 1);
 		return (true);
 	}
-
-	// even boards.
-	if (PStools::IsEven(CurNpuzzle->PuzzleSize)
-		&& PStools::IsEven(ManhattanDistanceState + swapNb))
-	{
-		std::cout << "SOLVABLE -> grid width even, inversions + manhattan even." << std::endl;
-		std::cout << "*** press ctrl + D to launch resolution of the puzzle ***" << std::endl;
-		read(0, NULL, 1);
-		return (true);
-	}
-
 	std::cout << "UNSOLVABLE" << std::endl;
 	std::cout << "*** press ctrl + D to launch resolution of the puzzle ***" << std::endl;
 	read(0, NULL, 1);
@@ -156,18 +133,14 @@ void						Resolver::AStarTurn(PuzzleState &State)
 			IsResolved = true;
 			break;
 		}
-
 		// ====> Not end ===> engage new turn;
 		CurNpuzzle->ResolverTurn += 1;
-		// Add previous state to closed list.
-		CurNpuzzle->ClosedList.push_back(CurState);
-		// Remove previous state from opened list;
-		PStools::RemoveStateFromVector(CurNpuzzle->OpenedList, CurState);
+		CurNpuzzle->ClosedList.push_back(CurState); // Add previous state to closed list.
+		PStools::RemoveStateFromVector(CurNpuzzle->OpenedList, CurState); // Remove previous state from opened list;
 		
 		// ====> Expand States =====>
 		expandedStates = ExpandState(CurState);
-		// For each expanded state;
-		AddStatesToOpenList(expandedStates);
+		AddStatesToOpenList(expandedStates); // add states to open list if not in open nor closed list;
 
 		if (CurNpuzzle->DisplayTurns == true)
 		{
@@ -176,9 +149,6 @@ void						Resolver::AStarTurn(PuzzleState &State)
 		}
 		CurState = SelectOpenListState(State);
 		//sleep(1);
-		//if (CurNpuzzle->OpenedList.size() != 0)
-			//AStarTurn(SelectOpenListState(State));
-
 	}
 }
 
@@ -201,26 +171,27 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 	std::cout << "Complexity in size: " << CurNpuzzle->OpenedList.size() + CurNpuzzle->ClosedList.size() << std::endl;
 
 	std::vector<PuzzleState>				PathFromStart;
-//	std::vector<PuzzleState>::iterator		it;
-
 	CurNpuzzle->NbOfMoves = 0;
-//	it = PathFromStart.begin();
-	for (PuzzleState *CurState = &State; CurState != NULL; CurState = CurState->ParentState)
+	PuzzleState *tmp = &State;
+	while (tmp)
 	{
 		CurNpuzzle->NbOfMoves += 1;
-		PathFromStart.push_back(*CurState); // <-- !! It's reversed !!
+		PathFromStart.push_back(*tmp); // <-- !! It's reversed !!
+		tmp = tmp->ParentState;
 	}
 
-	std::cout << "Nb of Game Moves required from Start to End: " << CurNpuzzle->NbOfMoves << std::endl << std::endl;
-
+	std::cout << "Nb of Moves required from Start to End: " << CurNpuzzle->NbOfMoves << std::endl << std::endl;
 	std::cout << "*** press ctrl + D to see puzzle resolution ***" << std::endl;
 	read(0, NULL, 1);
 
-	std::vector<PuzzleState>::iterator val;
-	for (val = PathFromStart.end(); val != PathFromStart.begin(); val--) // <-- !! It's reversed !!
+	int CurNbOfMoves = 0;
+	for(std::vector<PuzzleState>::reverse_iterator it = PathFromStart.rbegin(); it != PathFromStart.rend(); ++it) // <-- !! It's reversed !!
 	{
-		PStools::PrintPuzzleState(*val);
+		std::cout << std::endl << KYEL "Move " << CurNbOfMoves << ":" KRESET << std::endl;
+		PStools::PrintPuzzleState(*it);
+		CurNbOfMoves += 1;
 	}
+
 
 	exit (0);
 }
@@ -230,7 +201,7 @@ std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState &State)
 	std::vector<PuzzleState>					RetStates;
 
 	Point										zeroPos;
-	Point										TmpPos;
+	Point										tmpPos;
 	std::vector< std::vector<int> >::iterator	row;
 	std::vector<int>::iterator					col;
 	int											y = 0;
@@ -244,52 +215,48 @@ std::vector<PuzzleState>	Resolver::ExpandState(PuzzleState &State)
 			if (*col == 0)
 			{
 				zeroPos.setCoord(x, y);
-				//std::cout << *col << " found at " << zeroPos.getX() << "x " << zeroPos.getY() << "y\n";
 				State.ZeroPos = zeroPos;
 				// Up, right, down, left --> Clock wise rotation from zero;
 				// UP Position
 				if ((zeroPos.getY() - 1) >= 0) // UP pos free ?
 				{
 					// Get required values for swap
-					TmpPos = zeroPos;
-					TmpPos.setY(zeroPos.getY() - 1);
+					tmpPos = zeroPos;
+					tmpPos.setY(zeroPos.getY() - 1);
 
 					// Create and set values of new state;
-					//PuzzleState			NewState;
-					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					NewState = CreateNewPuzzleState(State, tmpPos, zeroPos);
 					RetStates.push_back(NewState);
 				}
 
 				// RIGHT Position (see UP pos for comments)
 				if ((zeroPos.getX() + 1) < State.PuzzleSize)
 				{
-					TmpPos = zeroPos;
-					TmpPos.setX(zeroPos.getX() + 1);
-
-					//PuzzleState			NewState;
-					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					tmpPos = zeroPos;
+					tmpPos.setX(zeroPos.getX() + 1);
+					NewState = CreateNewPuzzleState(State, tmpPos, zeroPos);
 					RetStates.push_back(NewState);
 				}
 
 				// DOWN Position (see UP pos for comments)
 				if ((zeroPos.getY() + 1) < State.PuzzleSize)
 				{
-					TmpPos = zeroPos;
-					TmpPos.setY(zeroPos.getY() + 1);
+					tmpPos = zeroPos;
+					tmpPos.setY(zeroPos.getY() + 1);
 
 					//PuzzleState			NewState;
-					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					NewState = CreateNewPuzzleState(State, tmpPos, zeroPos);
 					RetStates.push_back(NewState);
 				}
 
 				// LEFT Position (see UP pos for comments)
 				if ((zeroPos.getX() - 1) >= 0)
 				{
-					TmpPos = zeroPos;
-					TmpPos.setX(zeroPos.getX() - 1);
+					tmpPos = zeroPos;
+					tmpPos.setX(zeroPos.getX() - 1);
 
 					//PuzzleState			NewState;
-					NewState = CreateNewPuzzleState(State, TmpPos, zeroPos);
+					NewState = CreateNewPuzzleState(State, tmpPos, zeroPos);
 					RetStates.push_back(NewState);
 				}
 				return (RetStates); // zero found and expanded.
@@ -308,7 +275,8 @@ PuzzleState			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, P
 	NewState = State;
 	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
 	NewState.ZeroPos = TmpPos;
-	NewState.ParentState = &State;
+	NewState.ParentState = new PuzzleState();
+	*(NewState.ParentState) = State;
 	PStools::SetValuesString(NewState);
 	NewState.Cost = CurNpuzzle->CurHeuristic(NewState.Values);
 	// Heuristic addition;
