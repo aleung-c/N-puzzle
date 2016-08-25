@@ -39,10 +39,10 @@ void						Resolver::Start()
 	{
 
 		// ◦ The puzzle may be unsolvable, in which case you have to inform the user and exit
-		std:: cout << "Puzzle not resolvable, exiting." << std::endl;
-		exit (0);
+		std:: cout << "Puzzle not resolvable, exiting..." << std::endl;
+		return ;
 	}
-
+	// Start puzzle resolution with Astar.
 	AStarTurn(CurNpuzzle->FirstState);
 }
 
@@ -75,23 +75,20 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 
 	MergedPuzzleValues.clear();
 	// Display puzzle analysis informations.
-	std::cout << KGRN "Puzzle Datas:" KRESET << std::endl;
-	std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
-	std::cout << "StartState Manhattan distance : " << ManhattanDistanceState << std::endl;
-	std::cout << "Zero Manhattan distance : " << ManhattanDistanceZero << std::endl;
+	std::cout << KGRN "Puzzle first state datas:" KRESET << std::endl;
+	//std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
+	std::cout << "Manhattan distance : " << ManhattanDistanceState << std::endl;
+	//std::cout << "Zero Manhattan distance : " << ManhattanDistanceZero << std::endl;
 	std::cout << "Inversion Nb : " << swapNb << std::endl;
 	if (PStools::IsEven(ManhattanDistanceState + swapNb))
 	{
-		std::cout << KGRN "SOLVABLE" KRESET << " -> (Nb inversions + manhattan) = even." << std::endl;
+		std::cout << KGRN "SOLVABLE" KRESET << std::endl;
 		std::cout << "*** press Return to launch resolution of the puzzle ***" << std::endl;
 		read(0, NULL, 1);
 		return (true);
 	}
 	std::cout << KRED "UNSOLVABLE" KRESET << std::endl;
-	// TODO: exit the program by returning false;
-	std::cout << "*** press Return to launch resolution of the puzzle ***" << std::endl;
-	read(0, NULL, 1);
-	return (true); // <- here;
+	return (false); // <- here;
 }
 
 // A utility function to count inversions in given array 'arr[]'
@@ -284,8 +281,6 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 
 		// Cost Evaluation
 		NewState.Cost = CurNpuzzle->CurHeuristic(NewState.Values);
-		// Heuristic addition;
-		NewState.Cost += Heuristic::CasesWronglyPlaced(NewState.Values);
 
 		// Add the new state to the open list !
 		CurNpuzzle->OpenedList.push_back(NewState);
