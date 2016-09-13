@@ -25,7 +25,6 @@ int		main(int argc, char **argv)
 		PStools::SetValuesString(Npuzzle.FirstState);
 
 		// TODO: Selecting Heuristic dynamically.
-		Npuzzle.SelectedHeuristicNb = 1;
 		Npuzzle.DisplayTurns = true;
 		Npuzzle.CurHeuristic = &Heuristic::Manhattan;
 

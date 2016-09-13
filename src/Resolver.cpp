@@ -58,6 +58,13 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 	std::vector<int>::iterator					col;
 	std::vector<int> 							MergedPuzzleValues;
 
+	// check if puzzle values are correct;
+	if (InitPuzzle::ArePuzzleValuesCorrect(CurNpuzzle) == false)
+	{
+		std::cout << "Puzzle values incorrect, exiting..." << std::endl;
+		return (false);
+	}
+
 	// =====> get puzzle datas.
 	// get First state Zero pos;
 	ZeroStartPos = PStools::GetPuzzleZeroPosition(State);
@@ -249,8 +256,6 @@ void							Resolver::ExpandState(PuzzleState &State)
 		}
 		x = 0;
 	}
-
-	//return (RetStates);
 }
 
 /*

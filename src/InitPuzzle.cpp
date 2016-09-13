@@ -20,7 +20,7 @@ int				InitPuzzle::CheckArgs(t_NpuzzleData *Npuzzle, int argc, char **argv)
 	{
 		return (-1);
 	}
-	if (argc > 3) // more than three arg.
+	if (argc > 4) // more than 4 arg.
 	{
 		return (-1);
 	}
@@ -35,30 +35,56 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 	PuzzleState				ReturnedFirstState;
 	std::ifstream			fs;
 
-	if (argc > 1 && argv[1] && argv[1][0] != '-')
+	// Usage: ./Npuzzle [-mlt] [-g 3-n | file ...]
+	// check position1
+	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|t]*)$")))// -mlt in pos 1 
 	{
-		// One Argument --> Parse and get puzzle;
-		// Exception setting.
-		std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
-		fs.exceptions(exceptionMask);
-		try
+		// parse and set mlt;
+
+
+		if (argc == 3 && argv[2][0] != '-') // file in pos 3;
 		{
-			fs.open(argv[1]);
-			ReturnedFirstState = FillPuzzleWithFile(fs, Npuzzle);
-			fs.close();
+			// Parse File and get puzzle;
+			// Exception setting.
+			std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
+			fs.exceptions(exceptionMask);
+			try
+			{
+				fs.open(argv[2]);
+				ReturnedFirstState = FillPuzzleWithFile(fs, Npuzzle);
+				fs.close();
+			}
+			catch (std::ios_base::failure& e)
+			{
+				std::cout << argv[2] << ": No such file or directory\n";
+				exit(-1);
+			}
 		}
-		catch (std::ios_base::failure& e)
+		else if (argc == 4
+			&& std::regex_match (argv[2], std::regex("^(-g)$"))
+			&& std::regex_match (argv[3], std::regex("^(\\d+)$"))) // -g and a number in pos 3 and 4;
 		{
-			std::cout << argv[1] << ": No such file or directory\n";
+			// generate puzzle;
+			// only -g and a number. generate puzzle from size given in arg.
+			if (std::atoi(argv[3]) < 3)
+			{
+				std::cout << "Size of puzzle must be greater or equal to 3" << std::endl;
+				exit (-1);
+			}
+			Npuzzle->PuzzleSize = std::atoi(argv[3]);
+			ReturnedFirstState = GenerateRandomizedPuzzle(std::atoi(argv[3]));
+		}
+		else 
+		{
+			PrintUsage(argv[0]);
 			exit(-1);
 		}
 	}
-	else if (argc == 3 && argv[1] && std::regex_match (argv[1], std::regex("^(-g)$"))
-		&& argv[2] && std::regex_match (argv[2], std::regex("^(\\d+)$")))
+	else if (argc == 2 && std::regex_match (argv[1], std::regex("^(-h)$")))
 	{
-		// only -g and a number. generate puzzle from size given in arg.
-		Npuzzle->PuzzleSize = std::atoi(argv[2]);
-		ReturnedFirstState = GenerateRandomizedPuzzle(std::atoi(argv[2]));
+		// print help
+		PrintHelp();
+		exit(-1);
 	}
 	else
 	{
@@ -84,7 +110,7 @@ PuzzleState		InitPuzzle::FillPuzzleWithFile(std::ifstream &fs, t_NpuzzleData *Np
 	{
 		// std::cout << line << "\n"; // display content of file;
 		// Pass 1 : search puzzle size;
-		if (!isSizeFound && std::regex_match (line, std::regex("^\\s*(\\d+)\\s*(\\#.*)*$")))
+		if (!isSizeFound && std::regex_match(line, std::regex("^\\s*(\\d+)\\s*(\\#.*)*$")))
 		{
 			// get puzzle size in int;
 			puzzleSize = std::strtol(line.c_str(), NULL, 10);
@@ -100,7 +126,7 @@ PuzzleState		InitPuzzle::FillPuzzleWithFile(std::ifstream &fs, t_NpuzzleData *Np
 			regex_2 = "^(\\s*(\\d+)\\s*){" + std::to_string(puzzleSize) + "}\\s*(\\#.*)*$";
 		}
 		// Pass 2 : get puzzle values.
-		else if (isSizeFound && std::regex_match (line, std::regex(regex_2)))
+		else if (isSizeFound && std::regex_match(line, std::regex(regex_2)))
 		{
 			int						i = 0;
 			std::vector<int>		tmp;
@@ -170,8 +196,44 @@ PuzzleState		InitPuzzle::GenerateRandomizedPuzzle(int puzzleSize)
 	return (ReturnedState);
 }
 
-void			InitPuzzle::PrintUsage(std::string arg)
+/*
+**	Check if values in the puzzle are correct;
+*/
+bool			InitPuzzle::ArePuzzleValuesCorrect(t_NpuzzleData *Npuzzle)
 {
-	std::cout << "Usage: " << arg << " [puzzle.txt] | -g [PuzzleSize]\n";
+	std::string		PuzzleSortedString = Npuzzle->FirstState.ValuesString;
+	std::string		TargetSortedString = Npuzzle->TargetState.ValuesString;
+
+	// sort both puzzle strings.
+	std::sort(PuzzleSortedString.begin(), PuzzleSortedString.end());		
+	std::sort(TargetSortedString.begin(), TargetSortedString.end());
+	if (PuzzleSortedString.compare(TargetSortedString) == 0)
+	{
+		return (true);
+	}
+	else
+	{
+		return (false);
+	}
 }
 
+void			InitPuzzle::PrintUsage(std::string arg)
+{
+	// Usage: ./Npuzzle [-mlt | -h] [-g 3-n | file ...]
+	std::cout << "Usage: " << arg << " [-mowt | -h] [-g 3-n | file ...]\n";
+}
+
+void				InitPuzzle::PrintHelp()
+{
+	std::cout << KGRN "Npuzzle Help : " KRESET << std::endl << std::endl
+
+	<< "Usage: " << "./Npuzzle [-mlwt | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
+
+	<< "-m : use manhattan heuristic" << std::endl
+	<< "-o : use out of row and column heuristic" << std::endl
+	<< "-w : use case wrongly placed heuristic" << std::endl
+	<< "-t : use case truly places heuristic" << std::endl
+	<< "-h : bring help feature when no other argument is given" << std::endl
+	<< "! You can use more than one heuristic !" << std::endl << std::endl
+	<< " -g : When no file is selected, generate a random puzzle of following size" << std::endl;
+}

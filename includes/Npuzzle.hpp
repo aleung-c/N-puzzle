@@ -60,9 +60,15 @@ typedef struct 					s_NpuzzleData
 {
 	// Start settings
 	int							PuzzleSize;
-	int							SelectedHeuristicNb;
 
 	bool						DisplayTurns;
+
+	// selected heuristics.
+	bool						IsManhattanSelected;
+	bool						IsWronglyPlacedSelected;
+	bool						IsTrulyPlacedSelected;
+	bool						IsOutOfRowAndColSelected;
+
 	// Pointer to selected heuristic fonction;
 	int							(*CurHeuristic)(std::vector< std::vector <int> > Values);
 
