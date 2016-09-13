@@ -37,7 +37,6 @@ void						Resolver::Start()
 	// Solubilité test
 	if (IsPuzzleSolvable(CurNpuzzle->FirstState) == false)
 	{
-
 		// ◦ The puzzle may be unsolvable, in which case you have to inform the user and exit
 		std:: cout << "Puzzle not resolvable, exiting..." << std::endl;
 		return ;
@@ -212,17 +211,15 @@ void							Resolver::ExpandState(PuzzleState &State)
 			{
 				zeroPos.setCoord(x, y);
 				State.ZeroPos = zeroPos;
-				// Up, right, down, left --> Clock wise rotation from zero;
+				// Up, right, down, left --> Clockwise rotation from zero;
 				// UP Position
 				if ((zeroPos.getY() - 1) >= 0) // UP pos free ?
 				{
 					// Get required values for swap
 					tmpPos = zeroPos;
 					tmpPos.setY(zeroPos.getY() - 1);
-
 					// Create and set values of new state;
 					CreateNewPuzzleState(State, tmpPos, zeroPos);
-					RetStates.push_back(NewState);
 				}
 
 				// RIGHT Position (see UP pos for comments)
@@ -231,7 +228,6 @@ void							Resolver::ExpandState(PuzzleState &State)
 					tmpPos = zeroPos;
 					tmpPos.setX(zeroPos.getX() + 1);
 					CreateNewPuzzleState(State, tmpPos, zeroPos);
-					//RetStates.push_back(NewState);
 				}
 
 				// DOWN Position (see UP pos for comments)
@@ -239,10 +235,7 @@ void							Resolver::ExpandState(PuzzleState &State)
 				{
 					tmpPos = zeroPos;
 					tmpPos.setY(zeroPos.getY() + 1);
-
-					//PuzzleState			NewState;
 					CreateNewPuzzleState(State, tmpPos, zeroPos);
-					//RetStates.push_back(NewState);
 				}
 
 				// LEFT Position (see UP pos for comments)
@@ -250,12 +243,8 @@ void							Resolver::ExpandState(PuzzleState &State)
 				{
 					tmpPos = zeroPos;
 					tmpPos.setX(zeroPos.getX() - 1);
-
-					//PuzzleState			NewState;
 					CreateNewPuzzleState(State, tmpPos, zeroPos);
-					//RetStates.push_back(NewState);
 				}
-				//return (RetStates); // zero found and expanded.
 			}
 		}
 		x = 0;
@@ -281,7 +270,6 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 
 		// Cost Evaluation
 		NewState.Cost = CurNpuzzle->CurHeuristic(NewState.Values);
-
 		// Add the new state to the open list !
 		CurNpuzzle->OpenedList.push_back(NewState);
 	}
