@@ -31,5 +31,3 @@ PuzzleState			&PuzzleState::operator=(const PuzzleState& other)
 	Cost = other.Cost;
 	return (*this);
 }
-
-

@@ -28,6 +28,7 @@ int		main(int argc, char **argv)
 		Npuzzle.SelectedHeuristicNb = 1;
 		Npuzzle.DisplayTurns = true;
 		Npuzzle.CurHeuristic = &Heuristic::Manhattan;
+		// Npuzzle.CurHeuristic = &Heuristic::TilesOutOfRowandColumns;
 
 		std::cout << KBLU "First state:" KRESET << std::endl;
 		PStools::PrintPuzzleState(Npuzzle.FirstState);
