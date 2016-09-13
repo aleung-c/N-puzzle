@@ -26,6 +26,7 @@
 # include <list>
 # include <vector>
 # include <string>
+# include <queue> 
 # include <regex>
 # include <random>
 # include <algorithm>
@@ -77,6 +78,7 @@ typedef struct 					s_NpuzzleData
 	PuzzleState					TargetState;
 
 	std::vector<PuzzleState>	OpenedList;
+	std::priority_queue<PuzzleState, std::vector<PuzzleState>, MoreThanByHeuristic> pq;
 	std::vector<PuzzleState>	ClosedList;
 
 	// Running Datas

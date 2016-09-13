@@ -57,6 +57,31 @@ int 				Heuristic::CasesTrulyPlaced(std::vector< std::vector <int> > Values)
     return (nbWrong);
 }
 
+int              Heuristic::TilesOutOfRowandColumns(std::vector< std::vector <int> > Values)
+{
+    int nbWrong = 0;
+    int y = 0;
+    int x = 0;
+    Point *point;
+    std::vector< std::vector<int> >::iterator row;
+    std::vector<int>::iterator col;
+
+    for (row = Values.begin(); row != Values.end(); row++, y++) 
+    {
+        for (col = row->begin(); col != row->end(); col++, x++) 
+        {
+            point = Heuristic::GetCoordFromValue(*col);
+            if (point->getX() != x)
+                nbWrong++;
+            if (point->getY() != y)
+                nbWrong++;
+        }
+        x = 0;
+    }
+    printf("Heuristic Tiles: %d\n", nbWrong);
+    return (nbWrong);
+}
+
 int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Values)
 {
     int Distance = 0;
@@ -75,6 +100,7 @@ int              Heuristic::ManhattanImproved(std::vector< std::vector<int> > Va
              {
                 if ((x - 1 >= 0 && Tab[y][x - 1] == 1 && PStools::IsTruePosition(Npuzzle.TargetState, *col, Point(x - 1, y))) 
                     || (y - 1 >= 0 && Tab[y - 1][x] == 1 && PStools::IsTruePosition(Npuzzle.TargetState, *col, Point(x, y - 1))))
+                if (x - 1 >= 0 && Tab[y][x - 1] == 1 && PStools::IsTruePosition(Npuzzle.TargetState, *col, Point(x - 1, y)))
                 {
                     printf("x: %d y: %d\n", x, y);
                     Distance += 2;
