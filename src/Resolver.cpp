@@ -192,7 +192,7 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 	int CurNbOfMoves = 0;
 	for(std::vector<PuzzleState>::reverse_iterator it = PathFromStart.rbegin(); it != PathFromStart.rend(); ++it) // <-- !! It's reversed !!
 	{
-		std::cout << std::endl << KYEL "Move " << CurNbOfMoves << ":" KRESET << std::endl;
+		std::cout << KYEL "Move " << CurNbOfMoves << ":" KRESET << std::endl;
 		PStools::PrintPuzzleState(*it);
 		CurNbOfMoves += 1;
 	}
@@ -274,9 +274,32 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 		*(NewState.ParentState) = State;
 
 		// Cost Evaluation
-		NewState.Cost = CurNpuzzle->CurHeuristic(NewState.Values);
+		ApplyHeuristics(NewState);
 		// Add the new state to the open list !
 		CurNpuzzle->OpenedList.push_back(NewState);
+	}
+}
+
+void			Resolver::ApplyHeuristics(PuzzleState &State)
+{
+	State.Cost = 0;
+	if (CurNpuzzle->IsTrulyPlacedSelected)
+	{
+		// exception erasing all others.
+		State.Cost = Heuristic::CasesTrulyPlaced(State.Values);
+		return ;
+	}
+	if (CurNpuzzle->IsManhattanSelected)
+	{
+		State.Cost += Heuristic::Manhattan(State.Values);
+	}
+	if (CurNpuzzle->IsWronglyPlacedSelected)
+	{
+		State.Cost += Heuristic::CasesWronglyPlaced(State.Values);
+	}
+	if (CurNpuzzle->IsOutOfRowAndColSelected)
+	{
+		State.Cost += Heuristic::TilesOutOfRowandColumns(State.Values);
 	}
 }
 

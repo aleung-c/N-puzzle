@@ -34,6 +34,7 @@ class Resolver
 	
 		void							ExpandState(PuzzleState &State);
 		void							CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
+		void							ApplyHeuristics(PuzzleState &State);
 
 		void							AddStatesToOpenList(std::vector<PuzzleState> expandedStates);
 		bool							IsInList(std::vector<PuzzleState> &List, PuzzleState &State);

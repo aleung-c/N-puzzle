@@ -37,10 +37,33 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 
 	// Usage: ./Npuzzle [-mlt] [-g 3-n | file ...]
 	// check position1
-	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|t]*)$")))// -mlt in pos 1 
+	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|t]+)$")))// -mlt in pos 1 
 	{
 		// parse and set mlt;
+		std::string args = argv[1];
 
+		if (args.find('m') != std::string::npos)
+		{
+			Npuzzle->IsManhattanSelected = true;
+		}
+		if (args.find('o') != std::string::npos)
+		{
+			Npuzzle->IsOutOfRowAndColSelected = true;
+		}
+		if (args.find('w') != std::string::npos)
+		{
+			Npuzzle->IsWronglyPlacedSelected = true;
+		}
+		if (args.find('t') != std::string::npos)
+		{
+			Npuzzle->IsTrulyPlacedSelected = true;
+		}
+
+		// exception check
+		if (Npuzzle->IsWronglyPlacedSelected == true && Npuzzle->IsTrulyPlacedSelected == true)
+		{
+			std::cout << "Can only select one out of -t or -w." << std::endl;
+		}
 
 		if (argc == 3 && argv[2][0] != '-') // file in pos 3;
 		{
