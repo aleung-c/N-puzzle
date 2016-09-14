@@ -78,7 +78,6 @@ int              Heuristic::TilesOutOfRowandColumns(std::vector< std::vector <in
         }
         x = 0;
     }
-    printf("Heuristic Tiles: %d\n", nbWrong);
     return (nbWrong);
 }
 

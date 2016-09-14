@@ -32,8 +32,9 @@ Resolver::~Resolver()
 void						Resolver::Start()
 {
 	CurNpuzzle->NbOfMoves = 0;
-	CurNpuzzle->FirstState.Cost = CurNpuzzle->CurHeuristic(CurNpuzzle->FirstState.Values);
-
+	CurNpuzzle->CurTCostFromBeginning = 0;
+	ApplyHeuristics(CurNpuzzle->FirstState);
+	CurNpuzzle->FirstState.TCost = 0;
 	// Solubilité test
 	if (IsPuzzleSolvable(CurNpuzzle->FirstState) == false)
 	{
@@ -120,8 +121,10 @@ void						Resolver::AStarTurn(PuzzleState &State)
 	PuzzleState 				&CurState = State;
 
 	// Add first state to OpenedList;
-	CurNpuzzle->OpenedList.push_back(CurState);
-	while (!IsResolved && CurNpuzzle->OpenedList.size() != 0)
+	//CurNpuzzle->OpenedList.push_back(CurState);
+	CurNpuzzle->OpenedListQueue.push(CurState);
+	CurNpuzzle->OpenedListStrings.push_back(CurState.ValuesString);
+	while (!IsResolved && CurNpuzzle->OpenedListQueue.size() != 0)
 	{
 		// ====> Turn Start 
 		// Turn Status Display
@@ -129,7 +132,7 @@ void						Resolver::AStarTurn(PuzzleState &State)
 		{
 			printf(KGRN "Turn %d\n" KRESET, CurNpuzzle->ResolverTurn);
 			PStools::PrintPuzzleState(CurState);
-			printf("State Cost : %d\n", CurState.Cost);
+			printf("State HCost : %d\n", CurState.HCost);
 		}
 		// End Turn Status display
 		// ===> Check if end reached;
@@ -143,16 +146,20 @@ void						Resolver::AStarTurn(PuzzleState &State)
 		// ====> Not end ===> engage new turn;
 		CurNpuzzle->ResolverTurn += 1;
 		CurNpuzzle->ClosedList.push_back(CurState); // Add previous state to closed list.
-		PStools::RemoveStateFromVector(CurNpuzzle->OpenedList, CurState); // Remove previous state from opened list;
+		//PStools::RemoveStateFromVector(CurNpuzzle->OpenedList, CurState); // Remove previous state from opened list;
+		RemoveStringFromVector(CurState.ValuesString);
+		CurNpuzzle->OpenedListQueue.pop();
 		// ====> Expand States =====>
 		ExpandState(CurState); // expand and add to OpenedList directly;
 		if (CurNpuzzle->DisplayTurns == true)
 		{
-			printf("Open list size = %lu\n", CurNpuzzle->OpenedList.size());
-			printf("Closed list size = %lu\n\n", CurNpuzzle->ClosedList.size());
+			printf("Open list size = %lu\n", CurNpuzzle->OpenedListQueue.size());
+			printf("Closed list size = %lu\n", CurNpuzzle->ClosedList.size());
+			printf("Cur TCost from beginning = %d\n\n", CurNpuzzle->CurTCostFromBeginning);
 		}
-		CurState = SelectOpenListState(State);
-		//sleep(1);
+		//CurState = SelectOpenListState(State);
+		CurState = CurNpuzzle->OpenedListQueue.top();
+		CurNpuzzle->CurTCostFromBeginning = CurState.TCost;
 	}
 }
 
@@ -172,7 +179,7 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 		search
 	*/
 	std::cout << "Complexity in time: " << CurNpuzzle->ResolverTurn << std::endl;
-	std::cout << "Complexity in size: " << CurNpuzzle->OpenedList.size() + CurNpuzzle->ClosedList.size() << std::endl;
+	std::cout << "Complexity in size: " << CurNpuzzle->OpenedListQueue.size() + CurNpuzzle->ClosedList.size() << std::endl;
 
 	std::vector<PuzzleState>				PathFromStart;
 	CurNpuzzle->NbOfMoves = 0;
@@ -266,76 +273,64 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 	NewState = State;
 	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
 	PStools::SetValuesString(NewState);
- 	if (!IsInList(CurNpuzzle->OpenedList, NewState) && !IsInList(CurNpuzzle->ClosedList, NewState))
+	// Cost Evaluation
+	ApplyHeuristics(NewState);
+	NewState.TCost = CurNpuzzle->CurTCostFromBeginning + 1;
+	//printf("Cost from beg%d\n", NewState.CostFromBeginning);
+	
+ 	if (!IsStringInList(CurNpuzzle->OpenedListStrings, NewState.ValuesString) && !IsInList(CurNpuzzle->ClosedList, NewState))
 	{
 		// Set the values of the new State;
 		NewState.ZeroPos = TmpPos;
 		NewState.ParentState = new PuzzleState();
 		*(NewState.ParentState) = State;
 
-		// Cost Evaluation
-		ApplyHeuristics(NewState);
 		// Add the new state to the open list !
-		CurNpuzzle->OpenedList.push_back(NewState);
+		//CurNpuzzle->OpenedList.push_back(NewState);
+		CurNpuzzle->OpenedListStrings.push_back(NewState.ValuesString);
+		CurNpuzzle->OpenedListQueue.push(NewState);
+	} 
+	else if (IsInList(CurNpuzzle->ClosedList, NewState))
+	{
+		PreviousState = GetStateInList(CurNpuzzle->ClosedList, NewState);
+		//printf("prev cost %d\n", PreviousState.CostFromBeginning);
+		if (PreviousState.TCost < NewState.TCost)
+		{
+			// PreviousState move to open list, and remove it from closed list;
+			//CurNpuzzle->CurTCostFromBeginning = PreviousState.TCost;
+
+			CurNpuzzle->OpenedListStrings.push_back(PreviousState.ValuesString);
+			CurNpuzzle->OpenedListQueue.push(PreviousState);
+			PStools::RemoveStateFromVector(CurNpuzzle->ClosedList, PreviousState);
+		}
 	}
 }
 
 void			Resolver::ApplyHeuristics(PuzzleState &State)
 {
-	State.Cost = 0;
+	State.HCost = 0;
 	if (CurNpuzzle->IsTrulyPlacedSelected)
 	{
 		// exception erasing all others.
-		State.Cost = Heuristic::CasesTrulyPlaced(State.Values);
+		State.HCost = Heuristic::CasesTrulyPlaced(State.Values);
 		return ;
 	}
 	if (CurNpuzzle->IsManhattanSelected)
 	{
-		State.Cost += Heuristic::Manhattan(State.Values);
+		State.HCost += Heuristic::Manhattan(State.Values);
 	}
 	if (CurNpuzzle->IsWronglyPlacedSelected)
 	{
-		State.Cost += Heuristic::CasesWronglyPlaced(State.Values);
+		State.HCost += Heuristic::CasesWronglyPlaced(State.Values);
 	}
 	if (CurNpuzzle->IsOutOfRowAndColSelected)
 	{
-		State.Cost += Heuristic::TilesOutOfRowandColumns(State.Values);
-	}
-}
-
-
-PuzzleState			&Resolver::SelectOpenListState(PuzzleState &PreviousState) // TODO: a transformer en priority queue
-{
-
-	PuzzleState &Ret = CurNpuzzle->OpenedList[0];
-	for (int i = 0; i < (int)CurNpuzzle->OpenedList.size(); i++)
-	{
-		//std::cout << "searching cost = " << CurNpuzzle->OpenedList[i].Cost << std::endl;
-		if (CurNpuzzle->OpenedList[i].Cost < PreviousState.Cost)
-		{
-			//std::cout << "found lesser cost" << std::endl;
-			Ret = CurNpuzzle->OpenedList[i];
-		}
-	}
-	//std::cout << "NOT lesser cost" << std::endl;
-	return (Ret);
-}
-
-
-void				Resolver::AddStatesToOpenList(std::vector<PuzzleState> expandedStates)
-{
-	for (int i = 0; i < (int)expandedStates.size(); i++)
-	{
-		if (!IsInList(CurNpuzzle->OpenedList, expandedStates[i]) && !IsInList(CurNpuzzle->ClosedList, expandedStates[i]))
-		{
-			CurNpuzzle->OpenedList.push_back(expandedStates[i]);
-		}
+		State.HCost += Heuristic::TilesOutOfRowandColumns(State.Values);
 	}
 }
 
 bool						Resolver::IsInList(std::vector<PuzzleState> &List, PuzzleState &State)
 {
-
 	for (int i = 0; i < (int)List.size(); i++)
 	{
 		// pour chaque element de la liste;
@@ -347,11 +342,44 @@ bool						Resolver::IsInList(std::vector<PuzzleState> &List, PuzzleState &State)
 	return (false);
 }
 
+PuzzleState					Resolver::GetStateInList(std::vector<PuzzleState> &List, PuzzleState &State)
+{
+	for (int i = 0; i < (int)List.size(); i++)
+	{
+		// pour chaque element de la liste;
+		if ((std::strcmp(State.ValuesString.c_str(), List[i].ValuesString.c_str())) == 0)
+		{
+			return (List[i]);
+		}
+	}
+	return (State);
+}
 
+bool						Resolver::IsStringInList(std::vector<std::string> &List, std::string str)
+{
+	for (int i = 0; i < (int)List.size(); i++)
+	{
+		// pour chaque element de la liste;
+		if ((std::strcmp(str.c_str(), List[i].c_str())) == 0)
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
 
-
-
-
-
-
-
+void						Resolver::RemoveStringFromVector(std::string str)
+{
+	int Lsize = CurNpuzzle->OpenedListStrings.size();
+	
+	for (int i = 0; i < Lsize; i++)
+	{
+		// pour chaque element de la liste;
+		if ((std::strcmp(str.c_str(), CurNpuzzle->OpenedListStrings[i].c_str())) == 0)
+		{
+			CurNpuzzle->OpenedListStrings.erase (CurNpuzzle->OpenedListStrings.begin() + i);
+			return ;
+		}
+	}
+	return ;
+}

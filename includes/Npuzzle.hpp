@@ -77,11 +77,13 @@ typedef struct 					s_NpuzzleData
 	PuzzleState					FirstState;
 	PuzzleState					TargetState;
 
-	std::vector<PuzzleState>	OpenedList;
-	std::priority_queue<PuzzleState, std::vector<PuzzleState>, MoreThanByHeuristic> pq;
+	std::priority_queue<PuzzleState, std::vector<PuzzleState>, LessThanByHeuristic> OpenedListQueue;
+	std::vector<std::string>	OpenedListStrings;
+
 	std::vector<PuzzleState>	ClosedList;
 
 	// Running Datas
+	int 						CurTCostFromBeginning;
 	int 						ResolverTurn; // ==> complexity in time;
 	int 						NbOfMoves; // nb of games moves till solution found.
 
