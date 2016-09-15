@@ -67,7 +67,6 @@ typedef struct 					s_NpuzzleData
 	// selected heuristics.
 	bool						IsManhattanSelected;
 	bool						IsWronglyPlacedSelected;
-	bool						IsTrulyPlacedSelected;
 	bool						IsOutOfRowAndColSelected;
 
 	// Pointer to selected heuristic fonction;

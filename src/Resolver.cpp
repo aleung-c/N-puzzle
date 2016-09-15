@@ -62,7 +62,7 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 	// check if puzzle values are correct;
 	if (InitPuzzle::ArePuzzleValuesCorrect(CurNpuzzle) == false)
 	{
-		std::cout << "Puzzle values incorrect, exiting..." << std::endl;
+		std::cout << "Puzzle values incorrect" << std::endl;
 		return (false);
 	}
 
@@ -192,7 +192,7 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 	}
 	CurNpuzzle->NbOfMoves -= 1;
 
-	std::cout << "Nb of Moves required from Start to End: " << CurNpuzzle->NbOfMoves << std::endl << std::endl;
+	std::cout << "Nb of Moves required from Start to End: " << State.TCost << std::endl << std::endl;
 	std::cout << "*** press Return to see puzzle resolution ***" << std::endl;
 	read(0, NULL, 1);
 
@@ -309,12 +309,6 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 void			Resolver::ApplyHeuristics(PuzzleState &State)
 {
 	State.HCost = 0;
-	if (CurNpuzzle->IsTrulyPlacedSelected)
-	{
-		// exception erasing all others.
-		State.HCost = Heuristic::CasesTrulyPlaced(State.Values);
-		return ;
-	}
 	if (CurNpuzzle->IsManhattanSelected)
 	{
 		State.HCost += Heuristic::Manhattan(State.Values);

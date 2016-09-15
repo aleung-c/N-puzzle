@@ -37,7 +37,7 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 
 	// Usage: ./Npuzzle [-mlt] [-g 3-n | file ...]
 	// check position1
-	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|t]+)$")))// -mlt in pos 1 
+	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|d]+)$")))// -mlt in pos 1 
 	{
 		// parse and set mlt;
 		std::string args = argv[1];
@@ -54,15 +54,9 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 		{
 			Npuzzle->IsWronglyPlacedSelected = true;
 		}
-		if (args.find('t') != std::string::npos)
+		if (args.find('d') != std::string::npos)
 		{
-			Npuzzle->IsTrulyPlacedSelected = true;
-		}
-
-		// exception check
-		if (Npuzzle->IsWronglyPlacedSelected == true && Npuzzle->IsTrulyPlacedSelected == true)
-		{
-			std::cout << "Can only select one out of -t or -w." << std::endl;
+			Npuzzle->DisplayTurns = true;
 		}
 
 		if (argc == 3 && argv[2][0] != '-') // file in pos 3;
@@ -92,6 +86,11 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 			if (std::atoi(argv[3]) < 3)
 			{
 				std::cout << "Size of puzzle must be greater or equal to 3" << std::endl;
+				exit (-1);
+			}
+			else if (std::atoi(argv[3]) > 2000)
+			{
+				std::cout << "Size of puzzle too big" << std::endl;
 				exit (-1);
 			}
 			Npuzzle->PuzzleSize = std::atoi(argv[3]);
@@ -135,9 +134,14 @@ PuzzleState		InitPuzzle::FillPuzzleWithFile(std::ifstream &fs, t_NpuzzleData *Np
 		// Pass 1 : search puzzle size;
 		if (!isSizeFound && std::regex_match(line, std::regex("^\\s*(\\d+)\\s*(\\#.*)*$")))
 		{
+
 			// get puzzle size in int;
 			puzzleSize = std::strtol(line.c_str(), NULL, 10);
-			
+			if (puzzleSize < 3)
+			{
+				std::cout << "Puzzle size must be at least 3" << std::endl;
+				exit (-1);
+			}
 			// set global and first state values;
 			Npuzzle->PuzzleSize = puzzleSize;
 			ReturnedFirstState.PuzzleSize = puzzleSize;
@@ -243,19 +247,19 @@ bool			InitPuzzle::ArePuzzleValuesCorrect(t_NpuzzleData *Npuzzle)
 void			InitPuzzle::PrintUsage(std::string arg)
 {
 	// Usage: ./Npuzzle [-mlt | -h] [-g 3-n | file ...]
-	std::cout << "Usage: " << arg << " [-mowt | -h] [-g 3-n | file ...]\n";
+	std::cout << "Usage: " << arg << " [-mowd | -h] [-g 3-n | file ...]\n";
 }
 
 void				InitPuzzle::PrintHelp()
 {
 	std::cout << KGRN "Npuzzle Help : " KRESET << std::endl << std::endl
 
-	<< "Usage: " << "./Npuzzle [-mlwt | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
+	<< "Usage: " << "./Npuzzle [-mlwd | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
 
 	<< "-m : use manhattan heuristic" << std::endl
 	<< "-o : use out of row and column heuristic" << std::endl
 	<< "-w : use case wrongly placed heuristic" << std::endl
-	<< "-t : use case truly places heuristic" << std::endl
+	<< "-d : display each A star turn" << std::endl
 	<< "-h : bring help feature when no other argument is given" << std::endl
 	<< "! You can use more than one heuristic !" << std::endl << std::endl
 	<< " -g : When no file is selected, generate a random puzzle of following size" << std::endl;
