@@ -33,7 +33,8 @@ class PuzzleState
 		Point								ZeroPos;
 
 		// cost set by selected Heuristic;
-		int									Cost;
+		int									HCost;
+		int									TCost;
 
 							PuzzleState();
 							~PuzzleState();
@@ -43,10 +44,10 @@ class PuzzleState
 
 };
 
-struct MoreThanByHeuristic
+struct LessThanByHeuristic
 {
   bool operator()(const PuzzleState& lhs, const PuzzleState& rhs) const
   {
-    return lhs.Cost > rhs.Cost;
+    return lhs.HCost > rhs.HCost;
   }
 };

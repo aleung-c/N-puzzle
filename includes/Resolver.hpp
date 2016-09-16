@@ -36,14 +36,15 @@ class Resolver
 		void							CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
 		void							ApplyHeuristics(PuzzleState &State);
 
-		void							AddStatesToOpenList(std::vector<PuzzleState> expandedStates);
 		bool							IsInList(std::vector<PuzzleState> &List, PuzzleState &State);
-
-		PuzzleState						&SelectOpenListState(PuzzleState &State);
-
+		PuzzleState						GetStateInList(std::vector<PuzzleState> &List, PuzzleState &State);
+		bool							IsStringInList(std::vector<std::string> &List, std::string str);
+		void							RemoveStringFromVector(std::string str);
+		bool							IsInPQueue(PuzzleState &State);
 		void							EndFound(PuzzleState &State);
 
 	private:
 		PuzzleState						NewState; // tmp use;
+		PuzzleState						PreviousState; // tmp use;
 
 };

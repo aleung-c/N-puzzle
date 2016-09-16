@@ -28,6 +28,7 @@ PuzzleState			&PuzzleState::operator=(const PuzzleState& other)
 	Values = other.Values;
 	ValuesString = other.ValuesString;
 	ParentState = other.ParentState;
-	Cost = other.Cost;
+	HCost = other.HCost;
+	TCost = other.TCost;
 	return (*this);
 }
