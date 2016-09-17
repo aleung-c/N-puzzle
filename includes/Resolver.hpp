@@ -34,10 +34,15 @@ class Resolver
 	
 		void							ExpandState(PuzzleState &State);
 		void							CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos);
+		void							AstarNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos);
+		void							GreedyNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos);
+		void							DijkstraNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos);
+
 		void							ApplyHeuristics(PuzzleState &State);
 
 		bool							IsInList(std::vector<PuzzleState> &List, PuzzleState &State);
 		PuzzleState						GetStateInList(std::vector<PuzzleState> &List, PuzzleState &State);
+		PuzzleState						GetStateInPQ(PuzzleState &State);
 		bool							IsStringInList(std::vector<std::string> &List, std::string str);
 		void							RemoveStringFromVector(std::string str);
 		bool							IsInPQueue(PuzzleState &State);

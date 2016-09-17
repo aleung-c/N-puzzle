@@ -37,10 +37,23 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 
 	// Usage: ./Npuzzle [-mlt] [-g 3-n | file ...]
 	// check position1
-	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[m|o|w|d]+)$")))// -mlt in pos 1 
+	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[b|j|m|o|w|d]+)$")))// -mlt in pos 1 
 	{
 		// parse and set mlt;
 		std::string args = argv[1];
+		if (args.find('b') != std::string::npos)
+		{
+			Npuzzle->IsGreedySearchSelected = true;
+		}
+		if (args.find('j') != std::string::npos)
+		{
+			Npuzzle->IsDijkstraSearchSelected = true;
+		}
+		if (Npuzzle->IsDijkstraSearchSelected && Npuzzle->IsGreedySearchSelected)
+		{
+			std::cout << "Use only one of b or j" << std::endl;
+			exit(-1);
+		}
 
 		if (args.find('m') != std::string::npos)
 		{
@@ -162,7 +175,6 @@ PuzzleState		InitPuzzle::FillPuzzleWithFile(std::ifstream &fs, t_NpuzzleData *Np
 			while (i < puzzleSize)
 			{
 				curVal = std::strtol(str, &(str), 10); // &(str) -> tete de lecture.
-				// std:: cout << "val = " << curVal << "\n";
 				tmp.push_back(curVal);
 				i++;
 			}
@@ -247,15 +259,17 @@ bool			InitPuzzle::ArePuzzleValuesCorrect(t_NpuzzleData *Npuzzle)
 void			InitPuzzle::PrintUsage(std::string arg)
 {
 	// Usage: ./Npuzzle [-mlt | -h] [-g 3-n | file ...]
-	std::cout << "Usage: " << arg << " [-mowd | -h] [-g 3-n | file ...]\n";
+	std::cout << "Usage: " << arg << " [-bjmlwd | -h] [-g 3-n | file ...]\n";
 }
 
 void				InitPuzzle::PrintHelp()
 {
 	std::cout << KGRN "Npuzzle Help : " KRESET << std::endl << std::endl
 
-	<< "Usage: " << "./Npuzzle [-mlwd | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
+	<< "Usage: " << "./Npuzzle [-bjmlwd | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
 
+	<< "-b : use Greedy search in stead of regular a star" << std::endl
+	<< "-j : use Dijkstra search in stead of regular a star" << std::endl << std::endl
 	<< "-m : use manhattan heuristic" << std::endl
 	<< "-o : use out of row and column heuristic" << std::endl
 	<< "-w : use case wrongly placed heuristic" << std::endl

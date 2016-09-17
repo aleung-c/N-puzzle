@@ -24,11 +24,6 @@ int		main(int argc, char **argv)
 		Npuzzle.FirstState = InitPuzzle::CreatePuzzle(&Npuzzle, argc, argv); // now working basically.
 		PStools::SetValuesString(Npuzzle.FirstState);
 
-		// TODO: Selecting Heuristic dynamically.
-		Npuzzle.DisplayTurns = true;
-		//Npuzzle.CurHeuristic = &Heuristic::Manhattan;
-		// Npuzzle.CurHeuristic = &Heuristic::TilesOutOfRowandColumns;
-
 		std::cout << KBLU "First state:" KRESET << std::endl;
 		PStools::PrintPuzzleState(Npuzzle.FirstState);
 
@@ -39,7 +34,7 @@ int		main(int argc, char **argv)
 
 		// ------ Starting PuzzleResolution;
 		Resolver		*Resolver = new Resolver::Resolver(&Npuzzle);
-		Resolver->Start();
+		Resolver->Start(); 
 		// clean end;
 		delete Resolver;
 	}

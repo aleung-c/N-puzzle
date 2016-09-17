@@ -17,25 +17,6 @@
 */
 int			PStools::GetStateValue(PuzzleState &State, Point coord)
 {
-	// Iterating version
-	/*std::vector< std::vector<int> >::iterator	row;
-	std::vector<int>::iterator					col;
-	int											y = 0;
-	int											x = 0;
-
-	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
-	{
-		for (col = row->begin(); col != row->end(); col++, x++) 
-		{
-			if (y == coord.getY() && x == coord.getX())
-			{
-				return (*col);
-			}
-		}
-		x = 0;
-	}
-	return (-1); // not found, error;*/
-
 	// Direct access unprotected version
 	return ((State.Values[coord.getY()])[coord.getX()]);
 }
@@ -45,26 +26,6 @@ int			PStools::GetStateValue(PuzzleState &State, Point coord)
 */
 void		PStools::ChangeStateValue(PuzzleState &State, Point coord, int newVal)
 {
-	// Iterating version
-	/*
-	std::vector< std::vector<int> >::iterator	row;
-	std::vector<int>::iterator					col;
-	int											y = 0;
-	int											x = 0;
-
-	for (row = State.Values.begin(); row != State.Values.end(); row++, y++) 
-	{
-		for (col = row->begin(); col != row->end(); col++, x++) 
-		{
-			if (y == coord.getY() && x == coord.getX())
-			{
-				*col = newVal;
-				return ;
-			}
-		}
-		x = 0;
-	}*/
-
 	// Direct access unprotected version
 	(State.Values[coord.getY()])[coord.getX()] = newVal;
 }
@@ -294,7 +255,6 @@ void		PStools::PrintPuzzleState(PuzzleState &State)
 	int y = 0;
 	int x = 0;
 
-	//std::cout << "PuzzleSize = " << State.PuzzleSize << "\n";
 	while (y < State.PuzzleSize)
 	{
 		while (x < State.PuzzleSize)

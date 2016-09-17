@@ -54,6 +54,29 @@ class		PStools;
 #include "Point.hpp"
 #include "PuzzleState.hpp"
 
+struct LessThanByHeuristic
+{
+  bool operator()(const PuzzleState& lhs, const PuzzleState& rhs) const
+  {
+    return ((lhs.HCost + lhs.TCost) > (rhs.HCost + rhs.TCost));
+  }
+};
+
+typedef std::priority_queue<PuzzleState, std::vector<PuzzleState>, LessThanByHeuristic> OpenedListQueueType;
+
+class Queue: public OpenedListQueueType
+{
+	public:
+		std::vector<PuzzleState>::iterator begin()
+		{
+			return OpenedListQueueType::c.begin();
+		}
+		std::vector<PuzzleState>::iterator end()
+		{
+			return OpenedListQueueType::c.end();
+		}
+};
+
 /*
 **	Main structure containing puzzle datas.
 */
@@ -65,6 +88,8 @@ typedef struct 					s_NpuzzleData
 	bool						DisplayTurns;
 
 	// selected heuristics.
+	bool						IsGreedySearchSelected;
+	bool						IsDijkstraSearchSelected;
 	bool						IsManhattanSelected;
 	bool						IsWronglyPlacedSelected;
 	bool						IsOutOfRowAndColSelected;
@@ -76,7 +101,8 @@ typedef struct 					s_NpuzzleData
 	PuzzleState					FirstState;
 	PuzzleState					TargetState;
 
-	std::priority_queue<PuzzleState, std::vector<PuzzleState>, LessThanByHeuristic> OpenedListQueue;
+	Queue OpenedListQueue;
+	
 	std::vector<std::string>	OpenedListStrings;
 
 	std::vector<PuzzleState>	ClosedList;
@@ -87,6 +113,8 @@ typedef struct 					s_NpuzzleData
 	int 						NbOfMoves; // nb of games moves till solution found.
 
 }								t_NpuzzleData;
+
+
 
 #include "Heuristic.hpp"
 #include "InitPuzzle.hpp"

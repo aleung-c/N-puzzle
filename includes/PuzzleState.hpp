@@ -43,11 +43,3 @@ class PuzzleState
 		PuzzleState			&operator=(const PuzzleState& other);	
 
 };
-
-struct LessThanByHeuristic
-{
-  bool operator()(const PuzzleState& lhs, const PuzzleState& rhs) const
-  {
-    return lhs.HCost > rhs.HCost;
-  }
-};

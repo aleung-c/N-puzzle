@@ -85,6 +85,14 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 	std::cout << KGRN "Puzzle first state datas:" KRESET << std::endl;
 	//std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
 	std::cout << "Manhattan distance : " << ManhattanDistanceState << std::endl;
+	if (CurNpuzzle->IsGreedySearchSelected)
+	{
+		std::cout << "Using Greedy search instead of A star" << std::endl;
+	}
+	else if (CurNpuzzle->IsDijkstraSearchSelected)
+	{
+		std::cout << "Using Dijkstra search instead of A star" << std::endl;
+	}
 	//std::cout << "Zero Manhattan distance : " << ManhattanDistanceZero << std::endl;
 	std::cout << "Inversion Nb : " << swapNb << std::endl;
 	if (PStools::IsEven(ManhattanDistanceState + swapNb))
@@ -192,7 +200,20 @@ void						Resolver::EndFound(PuzzleState &State) // TODO: a finir, ne fonctionne
 	}
 	CurNpuzzle->NbOfMoves -= 1;
 
-	std::cout << "Nb of Moves required from Start to End: " << State.TCost << std::endl << std::endl;
+	if (CurNpuzzle->IsGreedySearchSelected)
+	{
+		int CurNbOfMoves = 0;
+		for(std::vector<PuzzleState>::reverse_iterator it = PathFromStart.rbegin();
+		it != PathFromStart.rend();
+		++it, CurNbOfMoves++) // <-- !! It's reversed !!
+		{}
+		std::cout << "Nb of Moves required from Start to End: " << CurNbOfMoves << std::endl << std::endl;
+	}
+	else
+	{
+		std::cout << "Nb of Moves required from Start to End: " << State.TCost << std::endl << std::endl;
+	}
+
 	std::cout << "*** press Return to see puzzle resolution ***" << std::endl;
 	read(0, NULL, 1);
 
@@ -270,15 +291,66 @@ void							Resolver::ExpandState(PuzzleState &State)
 */
 void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point zeroPos)
 {
+	if (CurNpuzzle->IsGreedySearchSelected == true)
+	{
+		GreedyNodeCreation(State, TmpPos, zeroPos);
+	}
+	else if (CurNpuzzle->IsDijkstraSearchSelected == true)
+	{
+		DijkstraNodeCreation(State, TmpPos, zeroPos);
+	}
+	else
+	{
+		AstarNodeCreation(State, TmpPos, zeroPos);
+	}
+}
+
+void		Resolver::AstarNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos)
+{
 	NewState = State;
 	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
 	PStools::SetValuesString(NewState);
-	// Cost Evaluation
+	// HCost Evaluation
 	ApplyHeuristics(NewState);
 	NewState.TCost = CurNpuzzle->CurTCostFromBeginning + 1;
-	//printf("Cost from beg%d\n", NewState.CostFromBeginning);
-	
- 	if (!IsStringInList(CurNpuzzle->OpenedListStrings, NewState.ValuesString) && !IsInList(CurNpuzzle->ClosedList, NewState))
+	if (IsInList(CurNpuzzle->ClosedList, NewState))
+	{
+		PreviousState = GetStateInList(CurNpuzzle->ClosedList, NewState);
+		if ((PreviousState.TCost + PreviousState.HCost) < (NewState.TCost + NewState.HCost))
+		{
+			// skip;
+			return ;
+		}
+	}
+	else if (IsStringInList(CurNpuzzle->OpenedListStrings, NewState.ValuesString))
+	{
+		PreviousState = GetStateInPQ(NewState);
+		if ((PreviousState.TCost + PreviousState.HCost) < (NewState.TCost + NewState.HCost))
+		{
+			// skip;
+			return ;
+		}
+	}
+	// Set the values of the new State;
+	NewState.ZeroPos = TmpPos;
+	NewState.ParentState = new PuzzleState();
+	*(NewState.ParentState) = State;
+
+	// Add the new state to the open list !
+	//CurNpuzzle->OpenedList.push_back(NewState);
+	CurNpuzzle->OpenedListStrings.push_back(NewState.ValuesString);
+	CurNpuzzle->OpenedListQueue.push(NewState);
+}
+
+void		Resolver::GreedyNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos)
+{
+	NewState = State;
+	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
+	PStools::SetValuesString(NewState);
+	// HCost Evaluation
+	ApplyHeuristics(NewState);
+	//NewState.TCost = CurNpuzzle->CurTCostFromBeginning + 1;
+	if (!IsStringInList(CurNpuzzle->OpenedListStrings, NewState.ValuesString) && !IsInList(CurNpuzzle->ClosedList, NewState))
 	{
 		// Set the values of the new State;
 		NewState.ZeroPos = TmpPos;
@@ -286,23 +358,28 @@ void			Resolver::CreateNewPuzzleState(PuzzleState &State, Point TmpPos, Point ze
 		*(NewState.ParentState) = State;
 
 		// Add the new state to the open list !
-		//CurNpuzzle->OpenedList.push_back(NewState);
 		CurNpuzzle->OpenedListStrings.push_back(NewState.ValuesString);
 		CurNpuzzle->OpenedListQueue.push(NewState);
-	} 
-	else if (IsInList(CurNpuzzle->ClosedList, NewState))
-	{
-		PreviousState = GetStateInList(CurNpuzzle->ClosedList, NewState);
-		//printf("prev cost %d\n", PreviousState.CostFromBeginning);
-		if (PreviousState.TCost < NewState.TCost)
-		{
-			// PreviousState move to open list, and remove it from closed list;
-			//CurNpuzzle->CurTCostFromBeginning = PreviousState.TCost;
+	}
+}
 
-			CurNpuzzle->OpenedListStrings.push_back(PreviousState.ValuesString);
-			CurNpuzzle->OpenedListQueue.push(PreviousState);
-			PStools::RemoveStateFromVector(CurNpuzzle->ClosedList, PreviousState);
-		}
+void		Resolver::DijkstraNodeCreation(PuzzleState &State, Point TmpPos, Point zeroPos)
+{
+	NewState = State;
+	PStools::SwapPuzzleValues(NewState, TmpPos, zeroPos);
+	PStools::SetValuesString(NewState);
+	// ! No HCost Evaluation
+	NewState.TCost = CurNpuzzle->CurTCostFromBeginning + 1;
+	if (!IsStringInList(CurNpuzzle->OpenedListStrings, NewState.ValuesString) && !IsInList(CurNpuzzle->ClosedList, NewState))
+	{
+		// Set the values of the new State;
+		NewState.ZeroPos = TmpPos;
+		NewState.ParentState = new PuzzleState();
+		*(NewState.ParentState) = State;
+
+		// Add the new state to the open list !
+		CurNpuzzle->OpenedListStrings.push_back(NewState.ValuesString);
+		CurNpuzzle->OpenedListQueue.push(NewState);
 	}
 }
 
@@ -327,7 +404,6 @@ bool						Resolver::IsInList(std::vector<PuzzleState> &List, PuzzleState &State)
 {
 	for (int i = 0; i < (int)List.size(); i++)
 	{
-		// pour chaque element de la liste;
 		if ((std::strcmp(State.ValuesString.c_str(), List[i].ValuesString.c_str())) == 0)
 		{
 			return (true);
@@ -340,10 +416,23 @@ PuzzleState					Resolver::GetStateInList(std::vector<PuzzleState> &List, PuzzleS
 {
 	for (int i = 0; i < (int)List.size(); i++)
 	{
-		// pour chaque element de la liste;
 		if ((std::strcmp(State.ValuesString.c_str(), List[i].ValuesString.c_str())) == 0)
 		{
 			return (List[i]);
+		}
+	}
+	return (State);
+}
+
+PuzzleState					Resolver::GetStateInPQ(PuzzleState &State)
+{
+	for (std::vector<PuzzleState>::iterator  it = CurNpuzzle->OpenedListQueue.begin();
+			it != CurNpuzzle->OpenedListQueue.end();
+			it++)
+	{
+		if ((std::strcmp(it->ValuesString.c_str(), State.ValuesString.c_str())) == 0)
+		{
+			return (*it);
 		}
 	}
 	return (State);
@@ -353,7 +442,6 @@ bool						Resolver::IsStringInList(std::vector<std::string> &List, std::string s
 {
 	for (int i = 0; i < (int)List.size(); i++)
 	{
-		// pour chaque element de la liste;
 		if ((std::strcmp(str.c_str(), List[i].c_str())) == 0)
 		{
 			return (true);
@@ -368,7 +456,6 @@ void						Resolver::RemoveStringFromVector(std::string str)
 	
 	for (int i = 0; i < Lsize; i++)
 	{
-		// pour chaque element de la liste;
 		if ((std::strcmp(str.c_str(), CurNpuzzle->OpenedListStrings[i].c_str())) == 0)
 		{
 			CurNpuzzle->OpenedListStrings.erase (CurNpuzzle->OpenedListStrings.begin() + i);
