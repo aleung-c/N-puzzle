@@ -35,7 +35,7 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 	PuzzleState				ReturnedFirstState;
 	std::ifstream			fs;
 
-	// Usage: ./Npuzzle [-mlt] [-g 3-n | file ...]
+	// Usage: ./Npuzzle [-mowt] [-g 3-n | file ...]
 	// check position1
 	if (argc > 2 && std::regex_match (argv[1], std::regex("^(-[b|j|m|o|w|d]+)$")))// -mlt in pos 1 
 	{
