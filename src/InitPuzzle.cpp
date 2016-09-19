@@ -268,15 +268,15 @@ bool			InitPuzzle::ArePuzzleValuesCorrect(t_NpuzzleData *Npuzzle)
 
 void			InitPuzzle::PrintUsage(std::string arg)
 {
-	// Usage: ./Npuzzle [-mlt | -h] [-g 3-n | file ...]
-	std::cout << "Usage: " << arg << " [-bjmlwd | -h] [-g 3-n | file ...]\n";
+	// Usage: ./Npuzzle [-bjmowd | -h] [-g 3-n | file ...]
+	std::cout << "Usage: " << arg << " [-bjmowd | -h] [-g 3-n | file ...]\n";
 }
 
 void				InitPuzzle::PrintHelp()
 {
 	std::cout << KGRN "Npuzzle Help : " KRESET << std::endl << std::endl
 
-	<< "Usage: " << "./Npuzzle [-bjmlwd | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
+	<< "Usage: " << "./Npuzzle [-bjmowd | -h] [-g 3-n | file ...]\n" << std::endl << std::endl
 
 	<< "-b : use Greedy search in stead of regular a star" << std::endl
 	<< "-j : use Dijkstra search in stead of regular a star" << std::endl << std::endl
