@@ -49,11 +49,7 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 		{
 			Npuzzle->IsDijkstraSearchSelected = true;
 		}
-		if (Npuzzle->IsDijkstraSearchSelected && Npuzzle->IsGreedySearchSelected)
-		{
-			std::cout << "Use only one of b or j" << std::endl;
-			exit(-1);
-		}
+		
 
 		if (args.find('m') != std::string::npos)
 		{
@@ -70,6 +66,20 @@ PuzzleState		InitPuzzle::CreatePuzzle(t_NpuzzleData *Npuzzle, int argc, char **a
 		if (args.find('d') != std::string::npos)
 		{
 			Npuzzle->DisplayTurns = true;
+		}
+
+		// exception handlings
+		// trying to use dijkstra and greedybestfirstsearch in the same time?
+		if (Npuzzle->IsDijkstraSearchSelected && Npuzzle->IsGreedySearchSelected)
+		{
+			std::cout << "Use only one of [-b] or [-j]" << std::endl;
+			exit(-1);
+		}
+		// only displaying with no other args or greedy with display but no heuristic ?
+		if (args.compare("-d") == 0 || args.compare("-db") == 0 || args.compare("-b") == 0)
+		{
+			std::cout << "Please specify a heuristic [-mow]" << std::endl;
+			exit(-1);
 		}
 
 		if (argc == 3 && argv[2][0] != '-') // file in pos 3;

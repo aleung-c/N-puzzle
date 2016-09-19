@@ -83,16 +83,17 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 	MergedPuzzleValues.clear();
 	// Display puzzle analysis informations.
 	std::cout << KGRN "Puzzle first state datas:" KRESET << std::endl;
-	//std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
-	std::cout << "Manhattan distance : " << ManhattanDistanceState << std::endl;
 	if (CurNpuzzle->IsGreedySearchSelected)
 	{
-		std::cout << "Using Greedy search instead of A star" << std::endl;
+		std::cout << KMAG "Using Greedy best first search instead of A star" KRESET << std::endl;
 	}
 	else if (CurNpuzzle->IsDijkstraSearchSelected)
 	{
-		std::cout << "Using Dijkstra search instead of A star" << std::endl;
+		std::cout << KMAG "Using Dijkstra (uniform cost) search instead of A star" KRESET << std::endl;
 	}
+	//std::cout << "Puzzle width : " << CurNpuzzle->PuzzleSize << std::endl;
+	std::cout << "Manhattan distance : " << ManhattanDistanceState << std::endl;
+	
 	//std::cout << "Zero Manhattan distance : " << ManhattanDistanceZero << std::endl;
 	std::cout << "Inversion Nb : " << swapNb << std::endl;
 	if (PStools::IsEven(ManhattanDistanceState + swapNb))
@@ -109,15 +110,21 @@ bool						Resolver::IsPuzzleSolvable(PuzzleState &State) // seems to work on 3 a
 // A utility function to count inversions in given array 'arr[]'
 int							Resolver::getInvCount(std::vector<int> arr)
 {
-    int inv_count = 0;
-    int puzzleMaxSize = CurNpuzzle->PuzzleSize * CurNpuzzle->PuzzleSize;
+	int inv_count = 0;
+	int puzzleMaxSize = CurNpuzzle->PuzzleSize * CurNpuzzle->PuzzleSize;
 
-    for (int i = 0; i < puzzleMaxSize - 1; i++)
-        for (int j = i+1; j < puzzleMaxSize; j++)
-             // Value 0 is used for empty space
-             if (arr[j] && arr[i] &&  arr[i] > arr[j])
-                  inv_count++;
-    return inv_count;
+	for (int i = 0; i < puzzleMaxSize - 1; i++)
+	{
+		for (int j = i+1; j < puzzleMaxSize; j++)
+		{
+			// Value 0 is used for empty space
+			if (arr[j] && arr[i] &&  arr[i] > arr[j])
+			{
+				inv_count++;
+			}
+		}
+	}
+	return (inv_count);
 }
 
 /*
