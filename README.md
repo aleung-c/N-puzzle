@@ -14,6 +14,6 @@ At each step, we explore a new state, a new "node", and we retain the number of 
 
 If we were to retain only the number of moves from the beginning when selecting the state to explore, the search would be a Djikstra algorithm, meaning it would go through every possible solution until it finds the result, assuring us the shortest path from the beginning to the end, at the cost of a long research time. 
 
-If we were to follow only the heuristic value for each states, the program would find the end very quickly, be the path could not be the shortest, as the search only search for the most interesting child without looking at its move cost. That is the greedy best first search. 
+If we were to follow only the heuristic value for each states, the program would find the end very quickly, but the path might not be the shortest, as the search only search for the most interesting child without looking at its move cost. That is the greedy best first search. 
 
 A star is powerful in the sense that it takes the best of these two search methods to select the node with the most interesting heuristic value, all the while looking at the one with the shortest path when possible. The speed is then acceptable, and the shortest path is always found.
