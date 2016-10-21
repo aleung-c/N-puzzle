@@ -3,6 +3,8 @@ A star algorithm implementation in C++ on Npuzzle board games.
 
 Duration: two weeks
 
+![Alt text](./cover/n-puzzle_screen1.jpg "N-puzzle screenshot 2")
+
 The goal of this project was to resolve N-puzzle (also known as taquin) by implementing the A star algorithm or one of its variants in a team of two. 
 We had to resolve puzzle of at least size 3, and our program can resolve up to size ~4-5 depending on its settings. 
 Undoubtedly, A star algorithm is very powerful. For the N puzzles, we considered each state of the puzzle as a "node", let's say the equivalent of a position on a game map. For each state, we generate the child states until one of these child is the result we are looking for (the resolved n puzzle). 
