@@ -3,7 +3,7 @@ A star algorithm implementation in C++ on Npuzzle board games.
 
 Duration: two weeks
 
-![Alt text](./cover/n-puzzle_screen1.jpg "N-puzzle screenshot 2")
+![Alt text](./cover/n-puzzle_screen1.jpg "N-puzzle screenshot 1")
 
 The goal of this project was to resolve N-puzzle (also known as taquin) by implementing the A star algorithm or one of its variants in a team of two. 
 We had to resolve puzzle of at least size 3, and our program can resolve up to size ~4-5 depending on its settings. 
@@ -17,3 +17,7 @@ If we were to retain only the number of moves from the beginning when selecting 
 If we were to follow only the heuristic value for each states, the program would find the end very quickly, but the path might not be the shortest, as the search only search for the most interesting child without looking at its move cost. That is the greedy best first search. 
 
 A star is powerful in the sense that it takes the best of these two search methods to select the node with the most interesting heuristic value, all the while looking at the one with the shortest path when possible. The speed is then acceptable, and the shortest path is always found.
+
+![Alt text](./cover/n-puzzle_screen2.jpg "N-puzzle screenshot 2")
+![Alt text](./cover/n-puzzle_screen2.jpg "N-puzzle screenshot 3")
+![Alt text](./cover/n-puzzle_screen2.jpg "N-puzzle screenshot 4")
